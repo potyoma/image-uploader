@@ -1,0 +1,13 @@
+.button {
+  color: var(--main-text-color);
+  background-color: var(--button-color);
+  border-radius: 0.625rem;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.button:disabled {
+  color: var(--secondary-text-color);
+}
