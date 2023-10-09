@@ -6,6 +6,7 @@ const nextConfig = {
       issuer: /\.[jt]sx?$/,
       use: ["@svgr/webpack"],
     });
+    return config;
   },
 };
 
