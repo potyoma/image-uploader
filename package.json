@@ -6,8 +6,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "pnpm run --parallel dev",
-    "build:server": "pnpm --filter server build --no-frozen-lockfile",
-    "build:web": "pnpm --filter web build --no-frozen-lockfile",
+    "build:server": "pnpm --filter server build --frozen-lockfile=false",
+    "build:web": "pnpm --filter web build --frozen-lockfile=false",
     "start:server": "pnpm --filter server start:prod",
     "start:web": "pnpm --filter web start"
   },
