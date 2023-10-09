@@ -27,5 +27,6 @@
   "author": "potyoma",
   "license": "ISC",
   "devDependencies": {
-  }
+  },
+  "packageManager": "pnpm@8.8.0"
 }
