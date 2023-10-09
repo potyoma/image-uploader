@@ -11,9 +11,6 @@
     "start:server": "pnpm --filter server start:prod",
     "start:web": "pnpm --filter web start"
   },
-  "prisma": {
-    "schema": "packages/database/schema.prisma"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/potyoma/image-uploader.git"
