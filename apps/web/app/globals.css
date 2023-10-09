@@ -5,6 +5,7 @@
   --dark-gray: #929aab;
   --white: #fff;
   --black: #393e46;
+  --green: #a9e5bb;
 
   /* COMPONENTS COLORS */
   --bg-color: var(--white);
@@ -12,7 +13,8 @@
   --secondary-text-color: var(--dark-gray);
   --button-color: var(--gray);
   --transparent-button-text-color: var(--yellow);
-  --badge-color: var(--yellow);
+  --image-badge-color: var(--yellow);
+  --counter-badge-color: var(--green);
 }
 
 *,
