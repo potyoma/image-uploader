@@ -1,0 +1,29 @@
+{
+  "name": "image-keeper",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Image storage. Upload and view saved images.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "pnpm run --parallel dev",
+    "db:migrate": "turbo run db:migrate",
+    "build": "trbo run build"
+  },
+  "prisma": {
+    "schema": "packages/database/schema.prisma"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/potyoma/image-uploader.git"
+  },
+  "keywords": [
+    "next",
+    "nest",
+    "react",
+    "typescript"
+  ],
+  "author": "potyoma",
+  "license": "ISC",
+  "devDependencies": {
+  }
+}
