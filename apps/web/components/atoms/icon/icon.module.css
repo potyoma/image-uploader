@@ -1,0 +1,11 @@
+.yellow > path {
+  stroke: var(--yellow);
+}
+
+.black > path {
+  stroke: var(--black);
+}
+
+.gray > path {
+  stroke: var(--gray);
+}
