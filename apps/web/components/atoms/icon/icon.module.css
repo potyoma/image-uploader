@@ -9,3 +9,7 @@
 .gray > path {
   stroke: var(--gray);
 }
+
+.green > path {
+  stroke: var(--green);
+}

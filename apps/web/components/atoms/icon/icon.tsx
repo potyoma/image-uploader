@@ -4,13 +4,15 @@ import Close from "@web/assets/icons/close.svg";
 import Download from "@web/assets/icons/download.svg";
 import Edit from "@web/assets/icons/edit.svg";
 import Trash from "@web/assets/icons/trash.svg";
+import clsx from "clsx";
 
-type IconName = "close" | "cloud" | "download" | "edit" | "trash";
-type IconColor = "yellow" | "black" | "gray";
+export type IconName = "close" | "cloud" | "download" | "edit" | "trash";
+type IconColor = "yellow" | "black" | "gray" | "green";
 
 interface IconProps {
   color?: IconColor;
   icon: IconName;
+  className?: string;
 }
 
 const ICONS: Record<IconName, any> = {
@@ -21,8 +23,8 @@ const ICONS: Record<IconName, any> = {
   trash: Trash,
 };
 
-export default function Icon({ color, icon }: IconProps) {
+export default function Icon({ color, icon, className }: IconProps) {
   const Icon = ICONS[icon];
 
-  return <Icon className={s[color ?? ""]} />;
+  return <Icon className={clsx(s[color ?? ""], className)} />;
 }
