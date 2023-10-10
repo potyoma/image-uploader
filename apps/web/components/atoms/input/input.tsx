@@ -1,9 +1,9 @@
 import clsx from "clsx";
 import {
   DetailedHTMLProps,
+  ForwardedRef,
   InputHTMLAttributes,
-  ReactNode,
-  useId,
+  forwardRef,
 } from "react";
 import s from "./input.module.css";
 
@@ -12,6 +12,9 @@ type InputProps = DetailedHTMLProps<
   HTMLInputElement
 >;
 
-export default function Input({ className, ...rest }: InputProps) {
-  return <input className={clsx(s.input, className)} {...rest} />;
-}
+export const Input = forwardRef(function CustomInput(
+  { className, ...props }: InputProps,
+  ref: ForwardedRef<HTMLInputElement>
+) {
+  return <input className={clsx(s.input, className)} {...props} ref={ref} />;
+});
