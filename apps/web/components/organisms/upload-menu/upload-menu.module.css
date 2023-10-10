@@ -1,0 +1,11 @@
+.button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  gap: 0.9375rem;
+}
+
+.icon {
+  transform: scale(5);
+}
