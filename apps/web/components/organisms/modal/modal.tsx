@@ -1,4 +1,5 @@
 "use client";
+
 import { ReactNode } from "react";
 import s from "./modal.module.css";
 import Button from "@web/components/atoms/button/button";
