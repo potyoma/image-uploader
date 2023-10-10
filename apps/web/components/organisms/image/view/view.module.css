@@ -1,8 +1,16 @@
 .image {
   width: fit-content;
-  max-width: 400px;
+  max-width: 280px;
+  max-height: 140px;
   object-fit: cover;
   border-radius: 0.625rem;
+}
+
+@media screen and (min-width: 600px) {
+  .image {
+    max-width: 400px;
+    max-height: 200px;
+  }
 }
 
 .badge {

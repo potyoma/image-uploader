@@ -18,7 +18,18 @@
   --counter-badge-text-color: var(--white);
 
   /* SIZING */
-  --parent-component-margin: 25px 50px 0;
+  --parent-component-margin: 12px 20px 0;
+}
+
+@media screen and (min-width: 600px) {
+  :root {
+    --parent-component-margin: 25px 50px 0;
+  }
+}
+
+html,
+body {
+  width: 100vw;
 }
 
 *,
@@ -28,7 +39,8 @@
 }
 
 body {
-  margin: var(--parent-component-margin);
+  padding: var(--parent-component-margin);
+  margin: 0;
 }
 
 .hideScrollbar {
