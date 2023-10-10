@@ -1,0 +1,25 @@
+:root {
+  /* ANIMATIONS */
+  --animation-duration: 1.5s;
+  --fly-up-animation: flyUp var(--animation-duration) ease 0s 1 forwards;
+}
+
+@keyframes flyUp {
+  0% {
+    transform: translateY(100%);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@-webkit-keyframes flyUp {
+  0% {
+    transform: translateY(100%);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
