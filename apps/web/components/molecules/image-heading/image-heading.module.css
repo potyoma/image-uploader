@@ -1,0 +1,15 @@
+.heading {
+  color: var(--secondary-text-color);
+  display: flex;
+  align-items: center;
+  gap: 0.9375rem;
+}
+
+.badge {
+  background-color: var(--counter-badge-color);
+}
+
+.badgeHeading {
+  margin: 0;
+  color: var(--counter-badge-text-color) !important;
+}
