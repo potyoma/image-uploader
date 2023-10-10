@@ -1,6 +1,6 @@
 import Logo from "@web/components/atoms/logo";
 import s from "./header.module.css";
-import UploadButton from "@web/components/molecules/upload-button";
+import UploadButton from "../upload-button";
 
 export default function Header() {
   return (
