@@ -1,0 +1,17 @@
+.input {
+  border: none;
+  background-image: none;
+  background-color: transparent;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  color: var(--main-text-color);
+}
+
+.input::placeholder {
+  color: var(--secondary-text-color);
+}
+
+.input:focus {
+  outline: none;
+}
