@@ -15,6 +15,10 @@
   --transparent-button-text-color: var(--yellow);
   --image-badge-color: var(--yellow);
   --counter-badge-color: var(--green);
+  --counter-badge-text-color: var(--white);
+
+  /* SIZING */
+  --parent-component-margin: 25px 50px 0;
 }
 
 *,
@@ -24,5 +28,13 @@
 }
 
 body {
-  margin: 25px 50px 0;
+  margin: var(--parent-component-margin);
+}
+
+.hideScrollbar {
+  height: 100vh;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  padding-right: 15px;
+  position: fixed;
 }
