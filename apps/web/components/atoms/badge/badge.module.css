@@ -1,0 +1,11 @@
+.badge {
+  padding: 0.3125rem 0.625rem;
+  text-align: center;
+  border-radius: 0.625rem;
+  color: var(--main-text-color);
+  line-height: 1.25;
+  font-weight: 400;
+  font-size: 0.78125rem;
+  text-align: right;
+  max-width: 94px;
+}
