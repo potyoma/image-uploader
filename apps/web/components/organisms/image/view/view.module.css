@@ -1,0 +1,18 @@
+.image {
+  width: fit-content;
+  max-width: 400px;
+  object-fit: cover;
+  border-radius: 0.625rem;
+}
+
+.badge {
+  background-color: var(--image-badge-color);
+  position: absolute;
+  top: -0.63rem;
+  right: 0.63rem;
+}
+
+.darkened {
+  filter: brightness(30%);
+  transition: filter var(--animation-duration);
+}
