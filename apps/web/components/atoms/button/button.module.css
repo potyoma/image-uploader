@@ -1,18 +1,34 @@
 .button {
   border: none;
-  border-radius: 0;
 
   margin: 0;
-  padding: 0;
   width: auto;
   background: none;
   appearance: none;
 
-  color: inherit;
   font: inherit;
   line-height: normal;
   cursor: pointer;
 
   -webkit-font-smoothing: inherit;
   -moz-osx-font-smoothing: inherit;
+
+  border-radius: 0.625rem;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.button:disabled {
+  color: var(--secondary-text-color);
+}
+
+.buttonBg {
+  color: var(--main-text-color);
+  background-color: var(--button-color);
+}
+
+.transparent {
+  color: var(--transparent-button-text-color);
 }
