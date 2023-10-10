@@ -10,7 +10,7 @@ import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
 export default function UploadMenu() {
-  const handleDrop = useCallback(files => {
+  const handleDrop = useCallback((files: unknown) => {
     console.log(files);
   }, []);
 
