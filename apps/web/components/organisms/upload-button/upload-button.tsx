@@ -5,8 +5,7 @@ import Icon from "@web/components/atoms/icon/icon";
 import { useCallback, useState } from "react";
 import Modal from "../modal/modal";
 import Logo from "@web/components/atoms/logo/logo";
-import Heading from "@web/components/atoms/heading/heading";
-import UploadMenu from "../upload-menu/upload-menu";
+import UploadMenu from "../upload-menu";
 
 interface UploadButtonProps {
   disabled?: boolean;

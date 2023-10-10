@@ -2,8 +2,8 @@
 
 import { ImageProvider } from "./context/image-context";
 import s from "./image.module.css";
-import Manager from "./manager/manager";
-import View from "./view/view";
+import Manager from "./manager";
+import View from "./view";
 
 interface ImageProps {
   src: string;

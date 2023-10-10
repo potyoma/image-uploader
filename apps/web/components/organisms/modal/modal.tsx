@@ -2,8 +2,8 @@
 
 import { ReactNode } from "react";
 import s from "./modal.module.css";
-import Button from "@web/components/atoms/button/button";
-import Icon from "@web/components/atoms/icon/icon";
+import Button from "@web/components/atoms/button";
+import Icon from "@web/components/atoms/icon";
 import { useScrollToggle } from "@web/hooks";
 
 interface ModalProps {

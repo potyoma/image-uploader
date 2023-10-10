@@ -1,11 +1,11 @@
 "use client";
 
-import Button from "@web/components/atoms/button/button";
-import Icon from "@web/components/atoms/icon/icon";
+import Button from "@web/components/atoms/button";
+import Icon from "@web/components/atoms/icon";
 import s from "./upload-menu.module.css";
-import Heading from "@web/components/atoms/heading/heading";
-import Text from "@web/components/atoms/text/text";
-import Input from "@web/components/atoms/input/input";
+import Heading from "@web/components/atoms/heading";
+import Text from "@web/components/atoms/text";
+import Input from "@web/components/atoms/input";
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 

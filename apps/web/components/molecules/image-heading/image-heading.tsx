@@ -1,4 +1,4 @@
-import Heading from "@web/components/atoms/heading/heading";
+import Heading from "@web/components/atoms/heading";
 import s from "./image-heading.module.css";
 import Badge from "@web/components/atoms/badge";
 

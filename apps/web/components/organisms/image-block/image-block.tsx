@@ -1,6 +1,6 @@
-import ImageHeading from "@web/components/molecules/image-heading/image-heading";
+import ImageHeading from "@web/components/molecules/image-heading";
 import { Pic } from "@web/stab/pics";
-import Image from "../image/image";
+import Image from "../image";
 import s from "./image-block.module.css";
 
 interface ImageBlockProps {

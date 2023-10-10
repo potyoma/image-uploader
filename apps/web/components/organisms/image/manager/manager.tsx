@@ -1,7 +1,7 @@
-import Button from "@web/components/atoms/button/button";
+import Button from "@web/components/atoms/button";
 import { useImageContext } from "../context";
 import s from "./manager.module.css";
-import Icon, { IconName } from "@web/components/atoms/icon/icon";
+import Icon, { IconName } from "@web/components/atoms/icon";
 import { ReactNode } from "react";
 
 function ManagerButton({
