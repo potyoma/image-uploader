@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Image Keeper",
-  description: "Image storage for all yout pictures",
+  description: "Image storage for all your pictures",
 };
 
 export default function RootLayout({
