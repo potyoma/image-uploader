@@ -10,6 +10,10 @@
   },
   "dependencies": {
     "clsx": "^2.0.0",
+    "mobx": "^6.10.2",
+    "mobx-react": "^9.0.1",
+    "moment": "^2.29.4",
+    "nanoid": "^5.0.1",
     "next": "13.5.4",
     "react": "^18",
     "react-dom": "^18",

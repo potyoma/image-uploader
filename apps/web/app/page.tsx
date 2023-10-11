@@ -1,16 +1,20 @@
-import Image from "next/image";
-import styles from "./page.module.css";
-import { PICS } from "@web/stab/pics";
+"use client";
 import ImageBlock from "@web/components/organisms/image-block/image-block";
+import { useImageKeeperStore } from "@web/store/context";
+import moment from "moment";
 
 export default function Home() {
+  const { pictures } = useImageKeeperStore();
+
   return (
     <>
-      {PICS.map(p => (
+      {pictures.map(p => (
         <ImageBlock
-          key={p.date.replace(" ", "_").toLowerCase()}
-          date={p.date}
-          pics={p.pics}
+          key={`${p.year}_${p.month}`}
+          date={`${moment()
+            .month(p.month - 1)
+            .format("MMMM")} '${p.year.toString().slice(2)}`}
+          pics={p.pictures}
         />
       ))}
     </>
