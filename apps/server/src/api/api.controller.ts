@@ -61,7 +61,9 @@ export class ApiController {
       return;
     }
 
+    const path = join(process.cwd(), picture.path);
     const file = createReadStream(join(process.cwd(), picture.path));
+    console.log(path);
 
     res.set({
       'Content-Type': picture.mimeType,
@@ -87,6 +89,7 @@ export class ApiController {
   }
 
   @Delete('picture/:id')
+  // TODO: Delete file
   async deletePicture(@Param('id') id: string, @Res() res: Response) {
     const pic = this.picturesService.deletePicture({ id });
 
