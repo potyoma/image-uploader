@@ -1,6 +1,7 @@
 export interface Picture {
   id?: string;
   src: string;
+  name: string;
   alt: string;
   date: string;
   comment?: string;
@@ -8,6 +9,7 @@ export interface Picture {
   loadProgress?: number;
   size?: number;
   blob?: Blob;
+  deleteTimeout?: NodeJS.Timeout;
 }
 
 export type Pictures = Record<string, Picture[]>;

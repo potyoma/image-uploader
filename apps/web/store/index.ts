@@ -4,13 +4,15 @@ import { nanoid } from "nanoid";
 import { loadImages, uploadImage } from "@web/lib/service";
 import { immer } from "zustand/middleware/immer";
 import moment from "moment";
-import { DATE_FORMAT } from "@web/consts";
+import { DATE_FORMAT, DELETE_TIMEOT as DELETE_TIMEOUT } from "@web/consts";
 import type { Notification } from "./models/notification";
+import { deleteImage } from "@web/lib/service/delete-image";
 
 interface ImageKeeperState {
   pictures: Picture[];
   notifications?: Notification[];
   loadQueue?: Picture[];
+  deleteQueue?: Picture[];
 }
 
 interface ImageKeeperActions {
@@ -19,6 +21,8 @@ interface ImageKeeperActions {
   getImages: () => Pictures;
   getLoadQueueImage: (id: string) => Picture | undefined;
   fetchPictures: () => Promise<void>;
+  deletePicture: (picture: Picture) => void;
+  cancelDelete: (picture: Picture) => void;
 }
 
 type StateType = ImageKeeperState & ImageKeeperActions;
@@ -104,6 +108,48 @@ export const useImageKeeperStore = create(
       const pictures = await loadImages();
       set(state => {
         state.pictures = pictures;
+      });
+    },
+    deletePicture: (picture: Picture) => {
+      set(state => {
+        const picIndex = findIndexById(state.pictures, picture.id!);
+        state.pictures.splice(picIndex, 1);
+        const timeout = setTimeout(
+          () =>
+            deleteImage(
+              picture,
+              notification =>
+                set(state => {
+                  state.addNotification(notification);
+                  const delQueueIndex = findIndexById(
+                    state.deleteQueue!,
+                    picture.id!
+                  );
+                  state.deleteQueue?.splice(delQueueIndex, 1);
+                }),
+              notification =>
+                set(state => {
+                  state.addNotification(notification);
+                  const delQueueIndex = findIndexById(
+                    state.deleteQueue!,
+                    picture.id!
+                  );
+                  state.deleteQueue?.splice(delQueueIndex, 1);
+                  state.pictures.push(picture);
+                })
+            ),
+          DELETE_TIMEOUT
+        );
+        picture.deleteTimeout = timeout;
+        (state.deleteQueue ??= []).push(picture);
+      });
+    },
+    cancelDelete: (picture: Picture) => {
+      set(state => {
+        const delQueueIndex = findIndexById(state.deleteQueue!, picture.id!);
+        clearTimeout(state.deleteQueue![delQueueIndex].deleteTimeout);
+        state.deleteQueue?.splice(delQueueIndex, 1);
+        state.pictures.push(picture);
       });
     },
   }))
