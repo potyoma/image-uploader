@@ -10,10 +10,9 @@ import {
   Res,
   StreamableFile,
   UploadedFile,
-  UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { UpdateCommentDto } from '@server/models/update-comment.dto';
 import { PicturesService } from '@server/modules/pictures/pictures.service';
 import { Request, Response } from 'express';
@@ -44,24 +43,6 @@ export class ApiController {
       alt: file.originalname,
       path: file.path,
       mimeType: file.mimetype,
-      url: this.getUrl(req),
-    });
-    return resp;
-  }
-
-  @Post('pictures')
-  @UseInterceptors(FilesInterceptor('pictures', 10, { dest: './storage' }))
-  async uploadPictures(
-    @UploadedFiles() files: Array<Express.Multer.File>,
-    @Req() req: Request,
-  ) {
-    const resp = await this.picturesService.createPictures({
-      pictures: files.map(({ originalname, path, mimetype }) => ({
-        name: originalname,
-        alt: originalname,
-        path,
-        mimeType: mimetype,
-      })),
       url: this.getUrl(req),
     });
     return resp;
