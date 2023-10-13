@@ -3,7 +3,6 @@ import "./globals.css";
 import "./animations.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { ImageKeeperStoreProvider } from "@web/store/context";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,10 +19,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ImageKeeperStoreProvider>
-          <Header />
-          <main>{children}</main>
-        </ImageKeeperStoreProvider>
+        <Header />
+        <main>{children}</main>
       </body>
     </html>
   );

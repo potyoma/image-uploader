@@ -1,11 +1,11 @@
 import ImageHeading from "@web/components/molecules/image-heading";
-import { Pic } from "@web/stab/pics";
 import Image from "../image";
 import s from "./image-block.module.css";
+import { Picture } from "@web/store/models/picture";
 
 interface ImageBlockProps {
   date: string;
-  pics: Pic[];
+  pics: Picture[];
 }
 
 export default function ImageBlock({ date, pics }: ImageBlockProps) {
@@ -16,13 +16,7 @@ export default function ImageBlock({ date, pics }: ImageBlockProps) {
       <ImageHeading date={date} count={count} />
       <div className={s.images}>
         {pics.map(pic => (
-          <Image
-            key={(date + pic.date + pic.alt).replace(" ", "_").toLowerCase()}
-            date={pic.date}
-            alt={pic.alt}
-            comment={pic.comment}
-            src={pic.src}
-          />
+          <Image key={pic.id!} picture={pic} />
         ))}
       </div>
     </div>

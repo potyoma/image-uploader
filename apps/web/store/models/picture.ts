@@ -1,5 +1,5 @@
 export interface Picture {
-  id: string;
+  id?: string;
   src: string;
   alt: string;
   date: string;
@@ -7,9 +7,11 @@ export interface Picture {
   loading?: boolean;
   loadProgress?: number;
   size?: number;
+  blob?: Blob;
 }
 
 export interface Pictures {
+  id: string;
   month: number;
   year: number;
   pictures: Picture[];

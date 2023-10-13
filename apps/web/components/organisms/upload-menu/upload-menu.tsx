@@ -8,11 +8,37 @@ import Text from "@web/components/atoms/text";
 import Input from "@web/components/atoms/input";
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
+import { useImageKeeperStore } from "@web/store";
+import { Picture } from "@web/store/models/picture";
+import moment from "moment";
 
-export default function UploadMenu() {
-  const handleDrop = useCallback((files: unknown) => {
-    console.log(files);
-  }, []);
+function fileToPicture(file: File): Picture {
+  return {
+    src: URL.createObjectURL(file),
+    alt: "preview uploading image",
+    date: moment().format("DD.MM.YYYY"),
+    size: file.size,
+  } as Picture;
+}
+
+interface UploadMenuProps {
+  onStartLoad?: () => void;
+}
+
+export default function UploadMenu({ onStartLoad }: UploadMenuProps) {
+  const { uploadImages } = useImageKeeperStore();
+
+  const handleDrop = useCallback(
+    (files: File[]) => {
+      onStartLoad?.();
+      const picturesWithMeta = files.map(f => ({
+        ...fileToPicture(f),
+        blob: f,
+      }));
+      uploadImages(picturesWithMeta);
+    },
+    [onStartLoad, uploadImages]
+  );
 
   const { getInputProps, getRootProps, open } = useDropzone({
     onDrop: handleDrop,

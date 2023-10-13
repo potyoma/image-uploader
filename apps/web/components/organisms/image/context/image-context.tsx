@@ -1,5 +1,7 @@
 "use client";
 
+import { useImageKeeperStore } from "@web/store";
+import { Picture } from "@web/store/models/picture";
 import {
   DetailedHTMLProps,
   HTMLAttributes,
@@ -11,9 +13,8 @@ import {
 type ChangeBooleanState = (value: boolean) => void;
 
 interface ImageContextProps {
-  loading: boolean;
+  picture: Picture;
   hovered: boolean;
-  setLoading: ChangeBooleanState;
   setHovered: ChangeBooleanState;
 }
 
@@ -25,22 +26,19 @@ type ImageProviderProps = DetailedHTMLProps<
   HTMLAttributes<HTMLDivElement>,
   HTMLDivElement
 > & {
-  loading?: boolean;
+  picture: Picture;
   children: ReactNode;
 };
 
 export function ImageProvider({
   children,
-  loading,
+  picture,
   ...rest
 }: ImageProviderProps) {
-  const [isLoading, setLoading] = useState(loading ?? false);
   const [hovered, setHovered] = useState(false);
 
   return (
-    <ImageContext.Provider
-      value={{ loading: isLoading, hovered, setLoading, setHovered }}
-    >
+    <ImageContext.Provider value={{ picture, hovered, setHovered }}>
       <div
         onMouseOver={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}

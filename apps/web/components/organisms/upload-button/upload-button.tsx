@@ -4,7 +4,6 @@ import Button from "@web/components/atoms/button";
 import Icon from "@web/components/atoms/icon/icon";
 import { useCallback, useState } from "react";
 import Modal from "../modal/modal";
-import Logo from "@web/components/atoms/logo/logo";
 import UploadMenu from "../upload-menu";
 
 interface UploadButtonProps {
@@ -23,7 +22,7 @@ export default function UploadButton({ disabled }: UploadButtonProps) {
         Upload Image
       </Button>
       <Modal open={isOpen} onClose={() => setIsOpen(false)}>
-        <UploadMenu />
+        <UploadMenu onStartLoad={toggle} />
       </Modal>
     </>
   );

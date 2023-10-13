@@ -20,9 +20,12 @@ function ManagerButton({
 }
 
 export default function Manager() {
-  const { hovered } = useImageContext();
+  const {
+    hovered,
+    picture: { loading },
+  } = useImageContext();
 
-  return hovered ? (
+  return hovered && !loading ? (
     <div className={s.manager}>
       <div className={s.buttons}>
         <ManagerButton icon="download">Download</ManagerButton>
