@@ -47,7 +47,6 @@ export class PicturesService {
   async getPictures(params: { url: string }) {
     const { url } = params;
     const pictures = await this.repository.getPictures();
-    console.log(pictures);
     return pictures.map((p) => this.toModel(p, url));
   }
 

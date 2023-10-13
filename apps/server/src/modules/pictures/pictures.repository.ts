@@ -8,7 +8,6 @@ export class PicturesRepository {
 
   async createPicture(params: { data: Prisma.PictureCreateInput }) {
     const { data } = params;
-    console.log(data);
     return this.prisma.picture.create({ data });
   }
 
