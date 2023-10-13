@@ -1,13 +1,21 @@
-import { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
+import {
+  AnchorHTMLAttributes,
+  ButtonHTMLAttributes,
+  DetailedHTMLProps,
+} from "react";
 import clsx from "clsx";
 import s from "./button.module.css";
 
 type ButtonProps = DetailedHTMLProps<
   ButtonHTMLAttributes<HTMLButtonElement>,
   HTMLButtonElement
-> & {
-  transparent?: boolean;
-};
+> &
+  DetailedHTMLProps<
+    AnchorHTMLAttributes<HTMLAnchorElement>,
+    HTMLAnchorElement
+  > & {
+    transparent?: boolean;
+  };
 
 export default function Button({
   className,
@@ -15,8 +23,11 @@ export default function Button({
   transparent,
   ...restProps
 }: ButtonProps) {
+  const { onClick, href } = restProps;
+  const Component = onClick && !href ? "button" : "a";
+
   return (
-    <button
+    <Component
       className={clsx(
         s.button,
         transparent ? s.transparent : s.buttonBg,
@@ -25,6 +36,6 @@ export default function Button({
       {...restProps}
     >
       {children}
-    </button>
+    </Component>
   );
 }
