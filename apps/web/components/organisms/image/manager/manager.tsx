@@ -7,12 +7,16 @@ import { ReactNode } from "react";
 function ManagerButton({
   icon,
   children,
+  onClick,
+  href,
 }: {
   icon: IconName;
   children: ReactNode;
+  onClick?: () => void;
+  href?: string;
 }) {
   return (
-    <Button transparent>
+    <Button transparent onClick={onClick} href={href}>
       <Icon color="yellow" icon={icon} />
       {children}
     </Button>
@@ -22,13 +26,15 @@ function ManagerButton({
 export default function Manager() {
   const {
     hovered,
-    picture: { loading },
+    picture: { loading, src },
   } = useImageContext();
 
   return hovered && !loading ? (
     <div className={s.manager}>
       <div className={s.buttons}>
-        <ManagerButton icon="download">Download</ManagerButton>
+        <ManagerButton icon="download" href={src}>
+          Download
+        </ManagerButton>
         <ManagerButton icon="edit">Edit label</ManagerButton>
         <ManagerButton icon="trash">Delete</ManagerButton>
       </div>

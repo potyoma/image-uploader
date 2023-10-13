@@ -61,7 +61,8 @@ const finishLoadingImage =
 
     const pic = state.pictures[picturesIndex];
     pic.loading = false;
-    pic.id = result?.id ?? pic.id;
+    pic.id = result!.id ?? pic.id;
+    pic.src = result!.src;
   };
 
 export const useImageKeeperStore = create(
