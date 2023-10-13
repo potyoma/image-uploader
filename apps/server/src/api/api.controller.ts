@@ -6,7 +6,6 @@ import {
   Param,
   Patch,
   Post,
-  Req,
   Res,
   StreamableFile,
   UploadedFile,
@@ -15,7 +14,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UpdateCommentDto } from '@server/models/update-comment.dto';
 import { PicturesService } from '@server/modules/pictures/pictures.service';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { createReadStream } from 'fs';
 import { join } from 'path';
 
@@ -23,12 +22,7 @@ import { join } from 'path';
 export class ApiController {
   constructor(private readonly picturesService: PicturesService) {}
 
-  private getUrl(request: Request) {
-    const isProduction = process.env.PRODUCTION === 'true';
-    return `${isProduction ? 'https' : request.protocol}://${request.get(
-      'Host',
-    )}/api`;
-  }
+  private PICTURE_URL_BASE = '/api';
 
   private checkExists(res: Response, entity?: any) {
     if (!entity) return res.status(404).send();
@@ -37,23 +31,22 @@ export class ApiController {
 
   @Post('picture')
   @UseInterceptors(FileInterceptor('picture', { dest: './storage' }))
-  async uploadPicture(
-    @UploadedFile() file: Express.Multer.File,
-    @Req() req: Request,
-  ) {
+  async uploadPicture(@UploadedFile() file: Express.Multer.File) {
     const resp = await this.picturesService.createPicture({
       name: file.originalname,
       alt: file.originalname,
       path: file.path,
       mimeType: file.mimetype,
-      url: this.getUrl(req),
+      url: this.PICTURE_URL_BASE,
     });
     return resp;
   }
 
   @Get('pictures')
-  async getPictures(@Req() req: Request) {
-    return await this.picturesService.getPictures({ url: this.getUrl(req) });
+  async getPictures() {
+    return await this.picturesService.getPictures({
+      url: this.PICTURE_URL_BASE,
+    });
   }
 
   @Get('picture/:id')
@@ -82,14 +75,13 @@ export class ApiController {
   async updateComment(
     @Param('id') id: string,
     @Body() update: UpdateCommentDto,
-    @Req() req: Request,
     @Res() res: Response,
   ) {
     const { comment } = update;
     const updated = await this.picturesService.updateComment({
       id,
       comment,
-      url: this.getUrl(req),
+      url: this.PICTURE_URL_BASE,
     });
     return this.checkExists(res, updated);
   }
