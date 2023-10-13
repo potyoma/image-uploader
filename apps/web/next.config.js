@@ -47,6 +47,12 @@ const nextConfig = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "http",
+        hostname: "image-uploader-production-097f.up.railway.app",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
   async rewrites() {
