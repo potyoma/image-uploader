@@ -1,0 +1,32 @@
+.notification {
+  display: flex;
+  padding: 1.25rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.3125rem;
+  border-radius: 0.625rem;
+  border: 1px solid var(--Gray-200, #eee);
+  background: var(--Gray-100, #f7f7f7);
+  box-shadow: 0px 17px 40px 0px rgba(57, 62, 70, 0.2);
+  margin-top: 1.25rem;
+}
+
+.heading {
+  margin: 0.2rem;
+}
+
+.message {
+  margin: 0.2rem;
+}
+
+.error {
+  color: var(--red);
+}
+
+.success {
+  color: var(--green);
+}
+
+.imfo {
+  color: var(--yellow);
+}
