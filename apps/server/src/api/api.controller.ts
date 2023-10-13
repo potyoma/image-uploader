@@ -24,7 +24,10 @@ export class ApiController {
   constructor(private readonly picturesService: PicturesService) {}
 
   private getUrl(request: Request) {
-    return `${request.protocol}://${request.get('Host')}/api`;
+    const isProduction = process.env.PRODUCTION === 'true';
+    return `${isProduction ? 'https' : request.protocol}://${request.get(
+      'Host',
+    )}/api`;
   }
 
   private checkExists(res: Response, entity?: any) {
