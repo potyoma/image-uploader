@@ -1,7 +1,9 @@
 import {
+  Body,
   Controller,
   Get,
   Param,
+  Patch,
   Post,
   Req,
   Res,
@@ -11,6 +13,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { UpdateCommentDto } from '@server/models/update-comment.dto';
 import { PicturesService } from '@server/modules/pictures/pictures.service';
 import { Request, Response } from 'express';
 import { createReadStream } from 'fs';
@@ -65,7 +68,7 @@ export class ApiController {
 
   @Get('picture/:id')
   async getPicture(
-    @Param() { id }: { id: string },
+    @Param('id') id: string,
     @Res({ passthrough: true }) res: Response,
   ) {
     const picture = await this.picturesService.getPicture({ id });
@@ -83,5 +86,20 @@ export class ApiController {
     });
 
     return new StreamableFile(file);
+  }
+
+  @Patch('picture/:id/comment')
+  async updateComment(
+    @Param('id') id: string,
+    @Body() update: UpdateCommentDto,
+    @Req() req: Request,
+  ) {
+    const { comment } = update;
+    const updated = await this.picturesService.updateComment({
+      id,
+      comment,
+      url: this.getUrl(req),
+    });
+    return updated;
   }
 }

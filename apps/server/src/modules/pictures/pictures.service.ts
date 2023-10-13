@@ -54,4 +54,17 @@ export class PicturesService {
     const { id } = params;
     return await this.repository.getPicture({ where: { id } });
   }
+
+  async updateComment(params: {
+    id: Picture['id'];
+    comment: Picture['comment'];
+    url: string;
+  }) {
+    const { id, comment, url } = params;
+    const picture = await this.repository.updatePicture({
+      where: { id },
+      data: { comment },
+    });
+    return this.toModel(picture, url);
+  }
 }
