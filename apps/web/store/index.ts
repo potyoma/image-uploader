@@ -1,29 +1,11 @@
 import { create } from "zustand";
-import { Picture } from "./models/picture";
+import type { Picture, Pictures } from "./models/picture";
 import { nanoid } from "nanoid";
-import { loadImage } from "@web/lib/service";
+import { loadImages, uploadImage } from "@web/lib/service";
 import { immer } from "zustand/middleware/immer";
 import moment from "moment";
 import { DATE_FORMAT } from "@web/consts";
-
-const STAB_SEED: Picture[] = [
-  ...[200, 300, 400, 500, 200].map(width => ({
-    id: nanoid(),
-    src: `https://picsum.photos/${width}/200`,
-    alt: "Picsum pic",
-    comment: width === 200 ? undefined : `width: ${width}`,
-    date: `${width === 200 ? "08" : "13"}.08.2023`,
-  })),
-  ...[200, 300, 800, 200].map(width => ({
-    id: nanoid(),
-    src: `https://picsum.photos/${width}/200`,
-    alt: "Picsum pic",
-    comment: width === 200 ? undefined : `width: ${width}`,
-    date: `${width === 200 ? "07" : "14"}.07.2023`,
-  })),
-];
-
-type Pictures = Record<string, Picture[]>;
+import type { Notification } from "./models/notification";
 
 interface ImageKeeperState {
   pictures: Picture[];
@@ -36,6 +18,7 @@ interface ImageKeeperActions {
   addNotification: (notification: Notification) => void;
   getImages: () => Pictures;
   getLoadQueueImage: (id: string) => Picture | undefined;
+  fetchPictures: () => Promise<void>;
 }
 
 type StateType = ImageKeeperState & ImageKeeperActions;
@@ -64,34 +47,46 @@ const sortPictures = (pictures: Picture[]): Pictures => {
 const findIndexById = (arr: Picture[], id: string) =>
   arr.findIndex(pic => pic.id === id);
 
-const finishLoadingImage = (imageId: string) => (state: StateType) => {
-  const [loadQueueIndex, picturesIndex] = [
-    findIndexById(state.loadQueue!, imageId),
-    findIndexById(state.pictures, imageId),
-  ];
-  state.loadQueue!.splice(loadQueueIndex, 1);
-  state.pictures[picturesIndex].loading = false;
-};
+const finishLoadingImage =
+  (notification: Notification, imageId: string, result?: Picture) =>
+  (state: StateType) => {
+    console.log(notification);
+    console.log(result);
+    console.log(imageId);
+    (state.notifications ??= []).push(notification);
+    const [loadQueueIndex, picturesIndex] = [
+      findIndexById(state.loadQueue!, imageId),
+      findIndexById(state.pictures, imageId),
+    ];
+    state.loadQueue!.splice(loadQueueIndex, 1);
+
+    if (!result) state.pictures.splice(picturesIndex, 1);
+
+    const pic = state.pictures[picturesIndex];
+    pic.loading = false;
+    pic.id = result?.id ?? pic.id;
+  };
 
 export const useImageKeeperStore = create(
   immer<StateType>((set, get) => ({
-    pictures: STAB_SEED,
+    pictures: [],
     uploadImages: images => {
       images.forEach(im => {
         im.id = nanoid();
         im.loading = true;
-      });
-      set(state => {
-        state.pictures.push(...images);
-        (state.loadQueue ??= []).push(...images);
-      });
-      images.forEach(im =>
-        loadImage(
+
+        set(state => {
+          state.pictures.push(im);
+          (state.loadQueue ??= []).push(im);
+        });
+
+        uploadImage(
           im,
           kb => set(updateImage(im.id!, "loadProgress", kb as never)),
-          () => set(finishLoadingImage(im.id!))
-        )
-      );
+          (notification, result) =>
+            set(finishLoadingImage(notification, im.id!, result))
+        );
+      });
     },
     addNotification: (notification: Notification) =>
       set(state => {
@@ -100,5 +95,11 @@ export const useImageKeeperStore = create(
     getImages: () => sortPictures(get().pictures),
     getLoadQueueImage: (id: string) =>
       get().loadQueue?.find(lq => lq.id === id),
+    fetchPictures: async () => {
+      const pictures = await loadImages();
+      set(state => {
+        state.pictures = pictures;
+      });
+    },
   }))
 );

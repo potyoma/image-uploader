@@ -1,1 +1,2 @@
-export { loadImage } from "./load-image";
+export { uploadImage } from "./upload-images";
+export { loadImages } from "./load-images";

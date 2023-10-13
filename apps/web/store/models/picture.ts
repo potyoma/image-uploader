@@ -10,9 +10,4 @@ export interface Picture {
   blob?: Blob;
 }
 
-export interface Pictures {
-  id: string;
-  month: number;
-  year: number;
-  pictures: Picture[];
-}
+export type Pictures = Record<string, Picture[]>;

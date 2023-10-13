@@ -1,11 +1,16 @@
 "use client";
 import ImageBlock from "@web/components/organisms/image-block/image-block";
 import { useImageKeeperStore } from "@web/store";
+import { useEffect } from "react";
 
 export default function Home() {
-  const { getImages } = useImageKeeperStore();
+  const { getImages, fetchPictures } = useImageKeeperStore();
 
   const pictures = getImages();
+
+  useEffect(() => {
+    fetchPictures();
+  }, []);
 
   return (
     <>
