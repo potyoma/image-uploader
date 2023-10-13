@@ -54,8 +54,8 @@ export default function UploadMenu({ onStartLoad }: UploadMenuProps) {
       <Input {...getInputProps()} />
       <Button transparent className={s.button} onClick={open}>
         <Icon color="green" icon="cloud" className={s.icon} />
-        <Text>
-          <Heading level="h2">Upload file</Heading>
+        <Heading level="h2">Upload file</Heading>
+        <Text className={s.text}>
           Drop your file(s) here or click to start uploading
         </Text>
       </Button>

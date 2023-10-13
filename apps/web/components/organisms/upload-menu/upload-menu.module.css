@@ -8,4 +8,9 @@
 
 .icon {
   transform: scale(5);
+  margin: 1rem;
+}
+
+.text {
+  margin: 0;
 }

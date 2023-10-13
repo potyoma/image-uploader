@@ -50,10 +50,7 @@ const findIndexById = (arr: Picture[], id: string) =>
 const finishLoadingImage =
   (notification: Notification, imageId: string, result?: Picture) =>
   (state: StateType) => {
-    console.log(notification);
-    console.log(result);
-    console.log(imageId);
-    (state.notifications ??= []).push(notification);
+    state.addNotification(notification);
     const [loadQueueIndex, picturesIndex] = [
       findIndexById(state.loadQueue!, imageId),
       findIndexById(state.pictures, imageId),
@@ -91,6 +88,13 @@ export const useImageKeeperStore = create(
     addNotification: (notification: Notification) =>
       set(state => {
         (state.notifications ??= []).push(notification);
+        setTimeout(
+          () =>
+            set(state => {
+              state.notifications?.shift();
+            }),
+          2000
+        );
       }),
     getImages: () => sortPictures(get().pictures),
     getLoadQueueImage: (id: string) =>
