@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -25,6 +26,11 @@ export class ApiController {
 
   private getUrl(request: Request) {
     return `${request.protocol}://${request.get('Host')}/api`;
+  }
+
+  private checkExists(res: Response, entity?: any) {
+    if (!entity) return res.status(404).send();
+    return entity;
   }
 
   @Post('picture')
@@ -93,6 +99,7 @@ export class ApiController {
     @Param('id') id: string,
     @Body() update: UpdateCommentDto,
     @Req() req: Request,
+    @Res() res: Response,
   ) {
     const { comment } = update;
     const updated = await this.picturesService.updateComment({
@@ -100,6 +107,13 @@ export class ApiController {
       comment,
       url: this.getUrl(req),
     });
-    return updated;
+    return this.checkExists(res, updated);
+  }
+
+  @Delete('picture/:id')
+  async deletePicture(@Param('id') id: string, @Res() res: Response) {
+    const pic = this.picturesService.deletePicture({ id });
+
+    return this.checkExists(res, pic);
   }
 }

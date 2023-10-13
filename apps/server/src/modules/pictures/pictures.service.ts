@@ -67,4 +67,9 @@ export class PicturesService {
     });
     return this.toModel(picture, url);
   }
+
+  async deletePicture(params: { id: string }) {
+    const { id } = params;
+    return await this.repository.deletePicture({ where: { id } });
+  }
 }
