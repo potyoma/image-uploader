@@ -9,7 +9,8 @@
     "build:server": "pnpm --filter server build",
     "build:web": "pnpm --filter web build",
     "start:server": "pnpm --filter server start:prod",
-    "start:web": "pnpm --filter web start"
+    "start:web": "pnpm --filter web start",
+    "migrate": "cd apps/server && npx prisma migrate dev"
   },
   "repository": {
     "type": "git",
@@ -23,7 +24,6 @@
   ],
   "author": "potyoma",
   "license": "ISC",
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "packageManager": "pnpm@8.8.0"
 }
