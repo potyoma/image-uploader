@@ -95,13 +95,13 @@ export function uploadImages(set: SetFunction) {
 
       set(state => {
         state.pictures.push(im);
-        index = state.loadQueue.push(im);
+        index = state.loadQueue.push(im) - 1;
 
         uploadImage(
           im,
           kb =>
             set(state => {
-              state.loadQueue![index].loadProgress = kb;
+              state.loadQueue[index].loadProgress = kb;
             }),
           (notification, result) =>
             set(finishLoadingImage(notification, index, result))

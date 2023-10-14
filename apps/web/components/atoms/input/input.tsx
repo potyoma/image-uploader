@@ -19,8 +19,6 @@ export const Input = forwardRef(function CustomInput(
 ) {
   const id = useId();
 
-  console.log(props);
-
   return (
     <div className={s.container}>
       <input

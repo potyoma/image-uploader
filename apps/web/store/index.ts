@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { StateCreator, create } from "zustand";
 import type { Picture } from "./models/picture";
 import { loadImages } from "@web/lib/service";
 import { immer } from "zustand/middleware/immer";
@@ -11,9 +11,15 @@ import {
   uploadImages,
 } from "./actions";
 import { findIndexById, sortPictures } from "./store.utils";
+import { persist } from "zustand/middleware";
+
+const middlewares = (
+  initializer: StateCreator<ImageKeeperStore, [["zustand/immer", never]], []>
+) =>
+  persist(immer<ImageKeeperStore>(initializer), { name: "image-keeper-store" });
 
 export const useImageKeeperStore = create(
-  immer<ImageKeeperStore>((set, get) => ({
+  middlewares((set, get) => ({
     pictures: [],
     loadQueue: [],
     deleteQueue: [],

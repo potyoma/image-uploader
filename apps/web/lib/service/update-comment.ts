@@ -14,9 +14,6 @@ export async function updateComment(
       comment,
     });
 
-    console.log(data);
-    console.log(status);
-
     if (!inRange(status, 200, 300)) throw "Update error";
 
     onFinish(

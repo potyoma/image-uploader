@@ -5,11 +5,11 @@ import ImageBlock from "@web/components/organisms/image-block/image-block";
 import Notifications from "@web/components/organisms/notifications";
 import { useImageKeeperStore } from "@web/store";
 import { useEffect } from "react";
+import { useShallow } from "zustand/react/shallow";
 
 export default function Home() {
-  const { getImages, fetchPictures } = useImageKeeperStore();
-
-  const pictures = getImages();
+  const { fetchPictures } = useImageKeeperStore();
+  const pictures = useImageKeeperStore(useShallow(state => state.getImages()));
 
   useEffect(() => {
     fetchPictures();
