@@ -22,7 +22,7 @@ export default function DeleteBubble({ picture }: DeleteBubbleProps) {
     <div className={s.bubble}>
       <Timer onTimeout={() => setRender(false)} />
       <Text className={s.text}>Delete image {name}</Text>
-      <Button onClick={() => cancelDelete(picture)}>
+      <Button onClick={cancelDelete}>
         <Icon icon="close" />
         Cancel
       </Button>

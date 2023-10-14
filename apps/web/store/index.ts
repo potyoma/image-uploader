@@ -1,110 +1,26 @@
 import { create } from "zustand";
-import type { Picture, Pictures } from "./models/picture";
-import { nanoid } from "nanoid";
-import { loadImages, uploadImage } from "@web/lib/service";
+import type { Picture } from "./models/picture";
+import { loadImages } from "@web/lib/service";
 import { immer } from "zustand/middleware/immer";
-import moment from "moment";
-import { DATE_FORMAT, DELETE_TIMEOT as DELETE_TIMEOUT } from "@web/consts";
 import type { Notification } from "./models/notification";
-import { deleteImage } from "@web/lib/service/delete-image";
-
-interface ImageKeeperState {
-  pictures: Picture[];
-  notifications?: Notification[];
-  loadQueue?: Picture[];
-  deleteQueue?: Picture[];
-  editingPicture?: Picture;
-}
-
-interface ImageKeeperActions {
-  uploadImages: (images: Picture[]) => void;
-  addNotification: (notification: Notification) => void;
-  getImages: () => Pictures;
-  getLoadQueueImage: (id: string) => Picture | undefined;
-  fetchPictures: () => Promise<void>;
-  deletePicture: (picture: Picture) => void;
-  cancelDelete: (picture: Picture) => void;
-  editPicture: (picture: Picture) => void;
-  cancelEdit: () => void;
-  saveEdited: (comment?: string) => void;
-}
-
-type StateType = ImageKeeperState & ImageKeeperActions;
-
-const updateImage =
-  (id: string, property: keyof Picture, value: never) => (state: StateType) => {
-    const picIndex = state.loadQueue?.findIndex(pic => pic.id === id) ?? -1;
-    if (picIndex < 0 || !state.loadQueue?.[picIndex]) return;
-    state.loadQueue[picIndex][property] = value;
-  };
-
-const sortPictures = (pictures: Picture[]): Pictures => {
-  const sorted = [...pictures].sort((a, b) =>
-    moment(a.date, DATE_FORMAT).isBefore(moment(b.date, DATE_FORMAT)) ? 1 : -1
-  );
-  const chunked = sorted.reduce((acc, next) => {
-    const date = moment(next.date, DATE_FORMAT);
-    const codedDate = `${date.month()}.${date.year()}`;
-
-    (acc[codedDate] ??= []).push(next);
-    return acc;
-  }, {} as Pictures);
-  return chunked;
-};
-
-const findIndexById = (arr: Picture[], id: string) =>
-  arr.findIndex(pic => pic.id === id);
-
-const finishLoadingImage =
-  (notification: Notification, imageId: string, result?: Picture) =>
-  (state: StateType) => {
-    state.addNotification(notification);
-    const [loadQueueIndex, picturesIndex] = [
-      findIndexById(state.loadQueue!, imageId),
-      findIndexById(state.pictures, imageId),
-    ];
-    state.loadQueue!.splice(loadQueueIndex, 1);
-
-    if (!result) state.pictures.splice(picturesIndex, 1);
-
-    const pic = state.pictures[picturesIndex];
-    pic.loading = false;
-    pic.id = result!.id ?? pic.id;
-    pic.src = result!.src;
-  };
+import { ImageKeeperStore } from "./store";
+import {
+  addNotification,
+  deletePicture,
+  saveEdited,
+  uploadImages,
+} from "./actions";
+import { findIndexById, sortPictures } from "./store.utils";
 
 export const useImageKeeperStore = create(
-  immer<StateType>((set, get) => ({
+  immer<ImageKeeperStore>((set, get) => ({
     pictures: [],
-    uploadImages: images => {
-      images.forEach(im => {
-        im.id = nanoid();
-        im.loading = true;
-
-        set(state => {
-          state.pictures.push(im);
-          (state.loadQueue ??= []).push(im);
-        });
-
-        uploadImage(
-          im,
-          kb => set(updateImage(im.id!, "loadProgress", kb as never)),
-          (notification, result) =>
-            set(finishLoadingImage(notification, im.id!, result))
-        );
-      });
-    },
+    loadQueue: [],
+    deleteQueue: [],
+    notifications: [],
+    uploadImages: uploadImages(set),
     addNotification: (notification: Notification) =>
-      set(state => {
-        (state.notifications ??= []).push(notification);
-        setTimeout(
-          () =>
-            set(state => {
-              state.notifications?.shift();
-            }),
-          2000
-        );
-      }),
+      set(addNotification(notification, set)),
     getImages: () => sortPictures(get().pictures),
     getLoadQueueImage: (id: string) =>
       get().loadQueue?.find(lq => lq.id === id),
@@ -114,52 +30,19 @@ export const useImageKeeperStore = create(
         state.pictures = pictures;
       });
     },
-    deletePicture: (picture: Picture) => {
-      set(state => {
-        const picClone = { ...picture };
-        const picIndex = findIndexById(state.pictures, picClone.id!);
-        state.pictures.splice(picIndex, 1);
-        const timeout = setTimeout(
-          () =>
-            deleteImage(
-              picClone,
-              notification =>
-                set(state => {
-                  state.addNotification(notification);
-                  const delQueueIndex = findIndexById(
-                    state.deleteQueue!,
-                    picClone.id!
-                  );
-                  state.deleteQueue?.splice(delQueueIndex, 1);
-                }),
-              notification =>
-                set(state => {
-                  state.addNotification(notification);
-                  const delQueueIndex = findIndexById(
-                    state.deleteQueue!,
-                    picClone.id!
-                  );
-                  state.deleteQueue?.splice(delQueueIndex, 1);
-                  state.pictures.push(picClone);
-                })
-            ),
-          DELETE_TIMEOUT
-        );
-        picClone.deleteTimeout = timeout;
-        (state.deleteQueue ??= []).push(picClone);
-      });
+    deletePicture: (id: string) => {
+      set(deletePicture(id, set));
     },
-    cancelDelete: (picture: Picture) => {
+    cancelDelete: () => {
       set(state => {
-        const delQueueIndex = findIndexById(state.deleteQueue!, picture.id!);
-        clearTimeout(state.deleteQueue![delQueueIndex].deleteTimeout);
-        state.deleteQueue?.splice(delQueueIndex, 1);
-        state.pictures.push(picture);
+        const picture = state.deleteQueue?.shift();
+        clearTimeout(picture?.deleteTimeout);
+        const picIndex = findIndexById(state.pictures, picture!.id!);
+        state.pictures[picIndex].markDelete = false;
       });
     },
     editPicture: (picture: Picture) => {
       set(state => {
-        console.log(picture);
         state.editingPicture = { ...picture };
       });
     },
@@ -169,9 +52,7 @@ export const useImageKeeperStore = create(
       });
     },
     saveEdited: comment => {
-      set(state => {
-        state.editingPicture!.comment = comment;
-      });
+      set(saveEdited(comment, set));
     },
   }))
 );

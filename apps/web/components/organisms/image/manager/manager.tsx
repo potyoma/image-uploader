@@ -40,7 +40,7 @@ export default function Manager() {
         <ManagerButton icon="edit" onClick={() => editPicture(picture)}>
           Edit label
         </ManagerButton>
-        <ManagerButton icon="trash" onClick={() => deletePicture(picture)}>
+        <ManagerButton icon="trash" onClick={() => deletePicture(picture.id!)}>
           Delete
         </ManagerButton>
       </div>

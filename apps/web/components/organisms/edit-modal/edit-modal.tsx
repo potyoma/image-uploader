@@ -1,3 +1,5 @@
+"use client";
+
 import { useImageKeeperStore } from "@web/store";
 import Modal from "../modal/modal";
 import Form from "@web/components/atoms/form";
@@ -8,32 +10,41 @@ import { Picture } from "@web/store/models/picture";
 import Input from "@web/components/atoms/input";
 import s from "./edit-modal.module.css";
 import Heading from "@web/components/atoms/heading";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 
-export default function EditModal() {
-  const { editingPicture, cancelEdit, saveEdited } = useImageKeeperStore();
+interface EditModalProps {
+  picture: Picture;
+  onClose: () => void;
+  onSave: (comment: string) => void;
+}
 
-  const [comment, setComment] = useState(editingPicture?.comment);
-
-  if (!editingPicture) return null;
+function EditModalComponent({ picture, onSave, onClose }: EditModalProps) {
+  const [comment, setComment] = useState(picture!.comment ?? "");
 
   const picturePreview = {
-    src: editingPicture.src,
-    alt: editingPicture.alt,
+    src: picture.src,
+    alt: picture.alt,
   } as Picture;
 
+  const handleSubmit = () => {
+    onSave(comment);
+  };
+
+  const handleChange = ({
+    target: { value },
+  }: ChangeEvent<HTMLInputElement>) => {
+    value?.length <= 100 && setComment(value);
+  };
+
   return (
-    <Modal
-      open={!!editingPicture}
-      onClose={cancelEdit}
-      cancelCaption={"Close editor"}
-    >
-      <Form className={s.form}>
+    <Modal open={!!picture} onClose={onClose} cancelCaption={"Close editor"}>
+      <Form onSubmit={handleSubmit} className={s.form}>
         <Heading>Set custom label</Heading>
         <View picture={picturePreview} preview />
         <Input
           value={comment}
-          onChange={({ target: { value } }) => setComment(value)}
+          type="string"
+          onChange={handleChange}
           placeholder="Enter custom label"
           label={"100 chars max"}
         />
@@ -43,5 +54,19 @@ export default function EditModal() {
         </Button>
       </Form>
     </Modal>
+  );
+}
+
+export default function EditModal() {
+  const { editingPicture, cancelEdit, saveEdited } = useImageKeeperStore();
+
+  if (!editingPicture) return null;
+
+  return (
+    <EditModalComponent
+      picture={editingPicture}
+      onSave={saveEdited}
+      onClose={cancelEdit}
+    />
   );
 }

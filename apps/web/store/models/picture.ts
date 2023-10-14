@@ -10,6 +10,7 @@ export interface Picture {
   size?: number;
   blob?: Blob;
   deleteTimeout?: NodeJS.Timeout;
+  markDelete?: boolean;
 }
 
 export type Pictures = Record<string, Picture[]>;

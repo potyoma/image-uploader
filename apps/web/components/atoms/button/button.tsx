@@ -24,7 +24,7 @@ export default function Button({
   ...restProps
 }: ButtonProps) {
   const { onClick, href } = restProps;
-  const Component = onClick && !href ? "button" : "a";
+  const Component = href ? "a" : "button";
 
   return (
     <Component

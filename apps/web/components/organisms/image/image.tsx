@@ -12,7 +12,9 @@ interface ImageProps {
 }
 
 export default function Image({ picture }: ImageProps) {
-  return (
+  const { markDelete } = picture;
+
+  return markDelete ? null : (
     <ImageProvider className={s.container} picture={picture}>
       <View />
       <Manager />
