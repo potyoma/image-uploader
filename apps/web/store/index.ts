@@ -13,6 +13,7 @@ interface ImageKeeperState {
   notifications?: Notification[];
   loadQueue?: Picture[];
   deleteQueue?: Picture[];
+  editingPicture?: Picture;
 }
 
 interface ImageKeeperActions {
@@ -23,6 +24,9 @@ interface ImageKeeperActions {
   fetchPictures: () => Promise<void>;
   deletePicture: (picture: Picture) => void;
   cancelDelete: (picture: Picture) => void;
+  editPicture: (picture: Picture) => void;
+  cancelEdit: () => void;
+  saveEdited: (comment?: string) => void;
 }
 
 type StateType = ImageKeeperState & ImageKeeperActions;
@@ -151,6 +155,22 @@ export const useImageKeeperStore = create(
         clearTimeout(state.deleteQueue![delQueueIndex].deleteTimeout);
         state.deleteQueue?.splice(delQueueIndex, 1);
         state.pictures.push(picture);
+      });
+    },
+    editPicture: (picture: Picture) => {
+      set(state => {
+        console.log(picture);
+        state.editingPicture = { ...picture };
+      });
+    },
+    cancelEdit: () => {
+      set(state => {
+        state.editingPicture = undefined;
+      });
+    },
+    saveEdited: comment => {
+      set(state => {
+        state.editingPicture!.comment = comment;
       });
     },
   }))

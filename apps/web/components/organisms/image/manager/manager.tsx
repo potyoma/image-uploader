@@ -29,7 +29,7 @@ export default function Manager() {
 
   const { loading, src } = picture;
 
-  const { deletePicture } = useImageKeeperStore();
+  const { deletePicture, editPicture } = useImageKeeperStore();
 
   return hovered && !loading ? (
     <div className={s.manager}>
@@ -37,7 +37,9 @@ export default function Manager() {
         <ManagerButton icon="download" href={src}>
           Download
         </ManagerButton>
-        <ManagerButton icon="edit">Edit label</ManagerButton>
+        <ManagerButton icon="edit" onClick={() => editPicture(picture)}>
+          Edit label
+        </ManagerButton>
         <ManagerButton icon="trash" onClick={() => deletePicture(picture)}>
           Delete
         </ManagerButton>

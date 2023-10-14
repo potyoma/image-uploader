@@ -10,9 +10,15 @@ interface ModalProps {
   open?: boolean;
   children: ReactNode;
   onClose: () => void;
+  cancelCaption?: string;
 }
 
-export default function Modal({ children, onClose, open }: ModalProps) {
+export default function Modal({
+  children,
+  onClose,
+  open,
+  cancelCaption = "Close",
+}: ModalProps) {
   useScrollToggle(open ?? false);
 
   return open ? (
@@ -20,7 +26,7 @@ export default function Modal({ children, onClose, open }: ModalProps) {
       <div className={s.controls}>
         <Button onClick={onClose}>
           <Icon color="black" icon="close" />
-          Close
+          {cancelCaption}
         </Button>
       </div>
       <div className={s.content}>{children}</div>

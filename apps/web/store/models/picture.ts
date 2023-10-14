@@ -3,7 +3,7 @@ export interface Picture {
   src: string;
   name: string;
   alt: string;
-  date: string;
+  date?: string;
   comment?: string;
   loading?: boolean;
   loadProgress?: number;

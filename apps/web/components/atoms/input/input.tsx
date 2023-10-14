@@ -4,17 +4,34 @@ import {
   ForwardedRef,
   InputHTMLAttributes,
   forwardRef,
+  useId,
 } from "react";
 import s from "./input.module.css";
 
 type InputProps = DetailedHTMLProps<
   InputHTMLAttributes<HTMLInputElement>,
   HTMLInputElement
->;
+> & { label?: string };
 
 export const Input = forwardRef(function CustomInput(
-  { className, ...props }: InputProps,
+  { className, label, ...props }: InputProps,
   ref: ForwardedRef<HTMLInputElement>
 ) {
-  return <input className={clsx(s.input, className)} {...props} ref={ref} />;
+  const id = useId();
+
+  return (
+    <div className={s.container}>
+      <input
+        id={id}
+        className={clsx(s.input, className)}
+        {...props}
+        ref={ref}
+      />
+      {label && (
+        <label className={s.label} htmlFor={id}>
+          {label}
+        </label>
+      )}
+    </div>
+  );
 });
