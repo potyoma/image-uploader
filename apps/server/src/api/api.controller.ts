@@ -24,7 +24,7 @@ export class ApiController {
 
   private checkExists(res: Response, entity?: any) {
     if (!entity) return res.status(404).send();
-    return entity;
+    return res.status(200).send(entity);
   }
 
   @Post('picture')
@@ -85,7 +85,6 @@ export class ApiController {
   @Delete('picture/:id')
   async deletePicture(@Param('id') id: string, @Res() res: Response) {
     const pic = this.picturesService.deletePicture({ id });
-
     return this.checkExists(res, pic);
   }
 }
