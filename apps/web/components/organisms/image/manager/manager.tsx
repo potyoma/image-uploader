@@ -3,6 +3,7 @@ import { useImageContext } from "../context";
 import s from "./manager.module.css";
 import Icon, { IconName } from "@web/components/atoms/icon";
 import { ReactNode } from "react";
+import { useImageKeeperStore } from "@web/store";
 
 function ManagerButton({
   icon,
@@ -24,10 +25,11 @@ function ManagerButton({
 }
 
 export default function Manager() {
-  const {
-    hovered,
-    picture: { loading, src },
-  } = useImageContext();
+  const { hovered, picture } = useImageContext();
+
+  const { loading, src } = picture;
+
+  const { deletePicture } = useImageKeeperStore();
 
   return hovered && !loading ? (
     <div className={s.manager}>
@@ -36,7 +38,9 @@ export default function Manager() {
           Download
         </ManagerButton>
         <ManagerButton icon="edit">Edit label</ManagerButton>
-        <ManagerButton icon="trash">Delete</ManagerButton>
+        <ManagerButton icon="trash" onClick={() => deletePicture(picture)}>
+          Delete
+        </ManagerButton>
       </div>
     </div>
   ) : null;

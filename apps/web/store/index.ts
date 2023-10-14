@@ -112,18 +112,19 @@ export const useImageKeeperStore = create(
     },
     deletePicture: (picture: Picture) => {
       set(state => {
-        const picIndex = findIndexById(state.pictures, picture.id!);
+        const picClone = { ...picture };
+        const picIndex = findIndexById(state.pictures, picClone.id!);
         state.pictures.splice(picIndex, 1);
         const timeout = setTimeout(
           () =>
             deleteImage(
-              picture,
+              picClone,
               notification =>
                 set(state => {
                   state.addNotification(notification);
                   const delQueueIndex = findIndexById(
                     state.deleteQueue!,
-                    picture.id!
+                    picClone.id!
                   );
                   state.deleteQueue?.splice(delQueueIndex, 1);
                 }),
@@ -132,16 +133,16 @@ export const useImageKeeperStore = create(
                   state.addNotification(notification);
                   const delQueueIndex = findIndexById(
                     state.deleteQueue!,
-                    picture.id!
+                    picClone.id!
                   );
                   state.deleteQueue?.splice(delQueueIndex, 1);
-                  state.pictures.push(picture);
+                  state.pictures.push(picClone);
                 })
             ),
           DELETE_TIMEOUT
         );
-        picture.deleteTimeout = timeout;
-        (state.deleteQueue ??= []).push(picture);
+        picClone.deleteTimeout = timeout;
+        (state.deleteQueue ??= []).push(picClone);
       });
     },
     cancelDelete: (picture: Picture) => {

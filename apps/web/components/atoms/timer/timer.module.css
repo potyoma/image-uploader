@@ -1,0 +1,39 @@
+.timer {
+  position: relative;
+  height: 2rem;
+  width: 2rem;
+}
+
+.timerCircle {
+  fill: none;
+  stroke: none;
+}
+
+.timerPathElapsed {
+  stroke-width: 7px;
+  stroke: var(--gray);
+}
+
+.timerLable {
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+}
+
+.timerPathRemaining {
+  stroke: var(--red);
+  stroke-width: 7px;
+  stroke-linecap: round;
+  transform: rotate(90deg);
+  transform-origin: center;
+  transform: 1s linear all;
+}
+
+.timerSvg {
+  transform: scaleX(-1);
+}
