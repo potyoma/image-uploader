@@ -15,8 +15,6 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { UpdateCommentDto } from '@server/models/update-comment.dto';
 import { PicturesService } from '@server/modules/pictures/pictures.service';
 import { Response } from 'express';
-import { createReadStream } from 'fs';
-import { join } from 'path';
 
 @Controller('api')
 export class ApiController {
@@ -54,16 +52,12 @@ export class ApiController {
     @Param('id') id: string,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const picture = await this.picturesService.getPicture({ id });
+    const { picture, file } = await this.picturesService.getPicture({ id });
 
     if (!picture) {
       res.status(404).send();
       return;
     }
-
-    const path = join(process.cwd(), picture.path);
-    const file = createReadStream(join(process.cwd(), picture.path));
-    console.log(path);
 
     res.set({
       'Content-Type': picture.mimeType,
@@ -89,7 +83,6 @@ export class ApiController {
   }
 
   @Delete('picture/:id')
-  // TODO: Delete file
   async deletePicture(@Param('id') id: string, @Res() res: Response) {
     const pic = this.picturesService.deletePicture({ id });
 

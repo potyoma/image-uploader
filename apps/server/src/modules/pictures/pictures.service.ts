@@ -3,10 +3,37 @@ import { PicturesRepository } from './pictures.repository';
 import { Picture } from '@prisma/client';
 import { PictureInfo } from '@server/models/picture.info';
 import * as moment from 'moment';
+import { join } from 'path';
+import { ReadStream, createReadStream } from 'fs';
+import { unlink } from 'fs/promises';
 
 @Injectable()
 export class PicturesService {
   constructor(private repository: PicturesRepository) {}
+
+  private getFullPath(path?: string) {
+    if (!path) return path;
+    return join(process.cwd(), path);
+  }
+
+  private async tryAccessFile(
+    operation: (path: string) => ReadStream | void | Promise<ReadStream | void>,
+    path?: string,
+  ) {
+    try {
+      const fullPath = this.getFullPath(path);
+
+      if (!fullPath) throw 'Access file error';
+
+      const res = operation(fullPath);
+
+      if (res instanceof Promise) return await res;
+
+      return res;
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   private toModel(picture: Picture, url: string) {
     return {
@@ -52,7 +79,13 @@ export class PicturesService {
 
   async getPicture(params: { id: Picture['id'] }) {
     const { id } = params;
-    return await this.repository.getPicture({ where: { id } });
+    const picture = await this.repository.getPicture({ where: { id } });
+    const file = (await this.tryAccessFile(
+      createReadStream,
+      picture?.path,
+    )) as ReadStream;
+
+    return { picture, file };
   }
 
   async updateComment(params: {
@@ -70,6 +103,10 @@ export class PicturesService {
 
   async deletePicture(params: { id: string }) {
     const { id } = params;
-    return await this.repository.deletePicture({ where: { id } });
+    const deleted = await this.repository.deletePicture({ where: { id } });
+
+    await this.tryAccessFile(unlink, deleted.path);
+
+    return deleted;
   }
 }
