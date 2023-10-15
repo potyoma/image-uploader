@@ -96,6 +96,7 @@ export function uploadImages(set: SetFunction) {
 
       set(state => {
         state.pictures.push(im);
+        state.noImages = false;
         index = state.loadQueue.push(im) - 1;
 
         uploadImage(
