@@ -28,10 +28,17 @@ export class ApiController {
     return res.status(200).send(entity);
   }
 
+  @Get('pictures')
+  async getPictures() {
+    const pictures = await this.picturesService.getPictures({
+      url: this.PICTURE_URL_BASE,
+    });
+    return pictures;
+  }
+
   @Get('pictures/count')
   async countPictures() {
     const count = await this.picturesService.countPictures();
-    await new Promise((res) => setTimeout(res, 3000));
     return { count } as CountResult;
   }
 
@@ -46,13 +53,6 @@ export class ApiController {
       url: this.PICTURE_URL_BASE,
     });
     return resp;
-  }
-
-  @Get('pictures')
-  async getPictures() {
-    return await this.picturesService.getPictures({
-      url: this.PICTURE_URL_BASE,
-    });
   }
 
   @Get('picture/:id')
