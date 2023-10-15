@@ -109,4 +109,8 @@ export class PicturesService {
 
     return deleted;
   }
+
+  async countPictures() {
+    return await this.repository.countPictures();
+  }
 }

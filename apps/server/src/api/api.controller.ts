@@ -12,6 +12,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { CountResult } from '@server/models/count.result';
 import { UpdateCommentDto } from '@server/models/update-comment.dto';
 import { PicturesService } from '@server/modules/pictures/pictures.service';
 import { Response } from 'express';
@@ -25,6 +26,13 @@ export class ApiController {
   private checkExists(res: Response, entity?: any) {
     if (!entity) return res.status(404).send();
     return res.status(200).send(entity);
+  }
+
+  @Get('pictures/count')
+  async countPictures() {
+    const count = await this.picturesService.countPictures();
+    await new Promise((res) => setTimeout(res, 3000));
+    return { count } as CountResult;
   }
 
   @Post('picture')

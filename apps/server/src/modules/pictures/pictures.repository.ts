@@ -40,4 +40,8 @@ export class PicturesRepository {
     const { where } = params;
     return this.prisma.picture.findUnique({ where });
   }
+
+  async countPictures() {
+    return this.prisma.picture.count();
+  }
 }
