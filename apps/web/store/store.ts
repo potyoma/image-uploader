@@ -2,6 +2,7 @@ import type { Picture, Pictures } from "./models/picture";
 import type { Notification } from "./models/notification";
 
 export interface ImageKeeperState {
+  count: number;
   pictures: Picture[];
   notifications: Notification[];
   loadQueue: Picture[];
@@ -12,7 +13,7 @@ export interface ImageKeeperState {
 export interface ImageKeeperActions {
   uploadImages: (images: Picture[]) => void;
   addNotification: (notification: Notification) => void;
-  getImages: () => Promise<Pictures>;
+  getImages: () => Promise<Record<string, Picture[]>>;
   getLoadQueueImage: (id: string) => Picture | undefined;
   deletePicture: (id: string) => void;
   cancelDelete: () => void;

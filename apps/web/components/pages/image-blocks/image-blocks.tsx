@@ -1,14 +1,24 @@
+"use client";
+
 import ImageBlock from "@web/components/organisms/image-block";
-import { loadImages } from "@web/lib/service";
 import { useImageKeeperStore } from "@web/store";
 import { sortPictures } from "@web/store/store.utils";
+import { Suspense, useEffect } from "react";
+import { ImageBlocksSkeleton } from ".";
+import { useShallow } from "zustand/react/shallow";
 
-export default async function ImageBlocks() {
-  const pictures = await loadImages();
+function ImageBlocksInt() {
+  if (typeof window === "undefined") {
+    throw Error("Image blocks should only render on the client.");
+  }
 
-  useImageKeeperStore.setState(state => {
-    state.pictures = pictures;
-  });
+  const pictures = useImageKeeperStore(useShallow(state => state.pictures));
+
+  const { getImages } = useImageKeeperStore();
+
+  useEffect(() => {
+    getImages();
+  }, []);
 
   const picsToRender = sortPictures(pictures);
 
@@ -18,5 +28,13 @@ export default async function ImageBlocks() {
         <ImageBlock key={chunkDate} date={chunkDate} pics={pics} />
       ))}
     </>
+  );
+}
+
+export default function ImageBlocks() {
+  return (
+    <Suspense fallback={<ImageBlocksSkeleton />}>
+      <ImageBlocksInt />;
+    </Suspense>
   );
 }

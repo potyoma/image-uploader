@@ -5,6 +5,8 @@ import clsx from "clsx";
 export default function ImageBlocksSkeleton() {
   const blocksList = Array.from({ length: 5 }, () => nanoid());
 
+  console.log("Suspensed")
+
   return (
     <div className={s.skeleton}>
       <div className={clsx(s.heading, "rounded")}></div>

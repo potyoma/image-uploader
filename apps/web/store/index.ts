@@ -12,6 +12,7 @@ import {
 } from "./actions";
 import { findIndexById, sortPictures } from "./store.utils";
 import { persist } from "zustand/middleware";
+import { countPictures } from "@web/lib/service/count-pictures";
 
 const middlewares = (
   initializer: StateCreator<ImageKeeperStore, [["zustand/immer", never]], []>
@@ -20,6 +21,7 @@ const middlewares = (
 
 export const useImageKeeperStore = create(
   middlewares((set, get) => ({
+    count: 0,
     pictures: [],
     loadQueue: [],
     deleteQueue: [],
@@ -38,6 +40,12 @@ export const useImageKeeperStore = create(
       }
 
       return sortPictures(pictures);
+    },
+    countPictures: async () => {
+      const picturesNumber = await countPictures();
+      set(state => {
+        state.count = picturesNumber;
+      });
     },
     getLoadQueueImage: (id: string) =>
       get().loadQueue?.find(lq => lq.id === id),

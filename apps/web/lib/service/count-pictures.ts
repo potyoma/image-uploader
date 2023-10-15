@@ -4,10 +4,7 @@ import { inRange } from "lodash";
 
 export async function countPictures() {
   try {
-    let url = `${PICTURES_URL}/count`;
-    if (typeof window === "undefined") url = `${process.env.SERVER_PATH}${url}`;
-
-    const { data, status } = await axios.get(url);
+    const { data, status } = await axios.get(`${PICTURES_URL}/count`);
 
     if (!inRange(status, 200, 300)) throw "Count error";
 

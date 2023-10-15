@@ -1,10 +1,21 @@
+"use client";
+
 import Text from "../text";
 import s from "./counter.module.css";
 import { plural } from "@web/lib/utils";
-import { countPictures } from "@web/lib/service/count-pictures";
+import { useEffect } from "react";
+import { useImageKeeperStore } from "@web/store";
 
-export default async function Counter() {
-  const count = await countPictures();
+export default function Counter() {
+  if (typeof window === "undefined") {
+    throw Error("Counter should only render on the client.");
+  }
+
+  const { count, countPictures } = useImageKeeperStore();
+
+  useEffect(() => {
+    countPictures();
+  }, []);
 
   return (
     <Text className={s.text}>

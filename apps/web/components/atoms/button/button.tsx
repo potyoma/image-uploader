@@ -23,7 +23,7 @@ export default function Button({
   transparent,
   ...restProps
 }: ButtonProps) {
-  const { onClick, href } = restProps;
+  const { href } = restProps;
   const Component = href ? "a" : "button";
 
   return (
