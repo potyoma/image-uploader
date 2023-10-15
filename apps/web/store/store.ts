@@ -17,11 +17,12 @@ export interface ImageKeeperActions {
   getImages: () => Promise<Record<string, Picture[]>>;
   getLoadQueueImage: (id: string) => Picture | undefined;
   deletePicture: (id: string) => void;
-  cancelDelete: () => void;
+  cancelDelete: (id: string) => void;
   editPicture: (picture: Picture) => void;
   cancelEdit: () => void;
   saveEdited: (comment?: string) => void;
   countPictures: () => Promise<void>;
+  deletePermanently: (id: string) => void
 }
 
 export type ImageKeeperStore = ImageKeeperState & ImageKeeperActions;

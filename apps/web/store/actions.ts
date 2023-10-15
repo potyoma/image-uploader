@@ -1,38 +1,47 @@
-import type { Picture, Pictures } from "./models/picture";
+import type { Picture } from "./models/picture";
 import type { Notification } from "./models/notification";
 import { ImageKeeperStore } from "./store";
-import { findIndexById } from "./store.utils";
+import { findIndexById, removeFromArrayById } from "./store.utils";
 import { deleteImage, updateComment, uploadImage } from "@web/lib/service";
-import { DELETE_TIMEOUT } from "@web/consts";
 import { nanoid } from "nanoid";
 
 type SetFunction = (fn: (state: ImageKeeperStore) => void) => void;
 
-export function deletePicture(id: string, set: SetFunction) {
+export function cancelDelete(id: string) {
+  return function (state: ImageKeeperStore) {
+    const delIndex = findIndexById(state.deleteQueue, id);
+    const picture = state.deleteQueue[delIndex];
+    clearTimeout(picture.deleteTimeout);
+    const picIndex = findIndexById(state.pictures, picture!.id!);
+    state.pictures[picIndex].markDelete = false;
+  };
+}
+
+export function deletePicture(id: string) {
   return function (state: ImageKeeperStore) {
     const picIndex = findIndexById(state.pictures, id);
     const picture = state.pictures[picIndex];
     picture.markDelete = true;
-    const timeout = setTimeout(
-      () =>
-        deleteImage(
-          picture,
-          notification =>
-            set(state => {
-              state.addNotification(notification);
-              state.deleteQueue?.shift();
-              state.pictures.splice(picIndex, 1);
-            }),
-          notification =>
-            set(state => {
-              state.addNotification(notification);
-              state.deleteQueue?.shift();
-              state.pictures[picIndex].markDelete = false;
-            })
-        ),
-      DELETE_TIMEOUT
+    state.deleteQueue.push(picture);
+  };
+}
+
+export function deletePermanently(id: string, set: SetFunction) {
+  return function (state: ImageKeeperStore) {
+    const picIndex = findIndexById(state.pictures, id);
+    const picture = state.pictures[picIndex];
+    deleteImage({ ...picture }, notification =>
+      set(state => {
+        state.addNotification(notification);
+        removeFromArrayById(state.deleteQueue, id);
+
+        if (notification.status === "success")
+          state.pictures.splice(picIndex, 1);
+        else state.pictures[picIndex].markDelete = false;
+
+        state.countPictures();
+      })
     );
-    state.deleteQueue.push({ ...picture, deleteTimeout: timeout });
   };
 }
 
@@ -68,14 +77,14 @@ export function saveEdited(comment: string | undefined, set: SetFunction) {
 
 function finishLoadingImage(
   notification: Notification,
-  index: number,
+  id: string,
   result?: Picture
 ) {
   return function (state: ImageKeeperStore) {
     state.addNotification(notification);
-    const [picture] = state.loadQueue!.splice(index, 1);
+    removeFromArrayById(state.loadQueue, id);
 
-    const pictureIndex = findIndexById(state.pictures, picture.id!);
+    const pictureIndex = findIndexById(state.pictures, id);
 
     if (!result) state.pictures.splice(pictureIndex, 1);
 
@@ -106,7 +115,7 @@ export function uploadImages(set: SetFunction) {
               state.loadQueue[index].loadProgress = kb;
             }),
           (notification, result) =>
-            set(finishLoadingImage(notification, index, result))
+            set(finishLoadingImage(notification, im.id!, result))
         );
       });
     });

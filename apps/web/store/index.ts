@@ -6,11 +6,13 @@ import type { Notification } from "./models/notification";
 import { ImageKeeperStore } from "./store";
 import {
   addNotification,
+  cancelDelete,
+  deletePermanently,
   deletePicture,
   saveEdited,
   uploadImages,
 } from "./actions";
-import { findIndexById, sortPictures } from "./store.utils";
+import { sortPictures } from "./store.utils";
 import { persist } from "zustand/middleware";
 import { countPictures } from "@web/lib/service/count-pictures";
 
@@ -51,15 +53,10 @@ export const useImageKeeperStore = create(
     getLoadQueueImage: (id: string) =>
       get().loadQueue?.find(lq => lq.id === id),
     deletePicture: (id: string) => {
-      set(deletePicture(id, set));
+      set(deletePicture(id));
     },
-    cancelDelete: () => {
-      set(state => {
-        const picture = state.deleteQueue?.shift();
-        clearTimeout(picture?.deleteTimeout);
-        const picIndex = findIndexById(state.pictures, picture!.id!);
-        state.pictures[picIndex].markDelete = false;
-      });
+    cancelDelete: (id: string) => {
+      set(cancelDelete(id));
     },
     editPicture: (picture: Picture) => {
       set(state => {
@@ -73,6 +70,9 @@ export const useImageKeeperStore = create(
     },
     saveEdited: comment => {
       set(saveEdited(comment, set));
+    },
+    deletePermanently: (id: string) => {
+      set(deletePermanently(id, set));
     },
   }))
 );

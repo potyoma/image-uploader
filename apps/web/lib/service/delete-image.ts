@@ -6,21 +6,20 @@ import { Notification } from "@web/store/models/notification";
 
 export async function deleteImage(
   picture: Picture,
-  onSuccess: (notification: Notification) => void,
-  onError: (notification: Notification) => void
+  onFinish: (notification: Notification) => void
 ) {
   try {
     const { status } = await axios.delete(`${PICTURE_URL}/${picture.id}`);
 
     if (!inRange(status, 200, 300)) throw "Delete error";
 
-    onSuccess({
+    onFinish({
       status: "success",
       heading: "Cool",
       message: `Successfully deleted image ${picture.name}`,
     });
   } catch {
-    onError({
+    onFinish({
       status: "error",
       heading: "Sorry, but",
       message: `Could not delete image ${picture.name}`,

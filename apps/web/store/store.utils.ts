@@ -6,6 +6,11 @@ export function findIndexById(arr: Picture[], id: string) {
   return arr.findIndex(pic => pic.id === id);
 }
 
+export function removeFromArrayById(arr: Picture[], id: string) {
+  const index = findIndexById(arr, id);
+  arr.splice(index, 1);
+}
+
 function formatDate(date?: string) {
   return moment(date, DATE_FORMAT);
 }

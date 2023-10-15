@@ -17,15 +17,20 @@ interface DeleteBubbleProps {
 export default function DeleteBubble({ picture }: DeleteBubbleProps) {
   const [render, setRender] = useState(true);
 
-  const { cancelDelete } = useImageKeeperStore();
+  const { cancelDelete, deletePermanently } = useImageKeeperStore();
 
   const { name } = picture;
 
+  const handleTimeout = () => {
+    setRender(false);
+    deletePermanently(picture.id!);
+  };
+
   return render ? (
     <div className={clsx(s.bubble, "rounded")}>
-      <Timer onTimeout={() => setRender(false)} />
+      <Timer onTimeout={handleTimeout} />
       <Text className={s.text}>Delete image {name}</Text>
-      <Button onClick={cancelDelete}>
+      <Button onClick={() => cancelDelete(picture.id!)}>
         <Icon icon="close" />
         Cancel
       </Button>
