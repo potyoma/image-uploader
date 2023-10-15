@@ -9,10 +9,8 @@ type SetFunction = (fn: (state: ImageKeeperStore) => void) => void;
 
 export function cancelDelete(id: string) {
   return function (state: ImageKeeperStore) {
-    const delIndex = findIndexById(state.deleteQueue, id);
-    const picture = state.deleteQueue[delIndex];
-    clearTimeout(picture.deleteTimeout);
-    const picIndex = findIndexById(state.pictures, picture!.id!);
+    removeFromArrayById(state.deleteQueue, id);
+    const picIndex = findIndexById(state.pictures, id);
     state.pictures[picIndex].markDelete = false;
   };
 }
@@ -98,6 +96,9 @@ function finishLoadingImage(
 
 export function uploadImages(set: SetFunction) {
   return function (images: Picture[]) {
+    set(state => {
+      state.noImages = false;
+    });
     images.forEach(im => {
       im.id = nanoid();
       im.loading = true;

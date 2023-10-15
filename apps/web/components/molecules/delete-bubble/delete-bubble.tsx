@@ -26,11 +26,16 @@ export default function DeleteBubble({ picture }: DeleteBubbleProps) {
     deletePermanently(picture.id!);
   };
 
+  const handleCancel = () => {
+    setRender(false);
+    cancelDelete(picture.id!);
+  };
+
   return render ? (
     <div className={clsx(s.bubble, "rounded")}>
       <Timer onTimeout={handleTimeout} />
       <Text className={s.text}>Delete image {name}</Text>
-      <Button onClick={() => cancelDelete(picture.id!)}>
+      <Button onClick={handleCancel}>
         <Icon icon="close" />
         Cancel
       </Button>
