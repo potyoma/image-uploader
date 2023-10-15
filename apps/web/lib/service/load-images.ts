@@ -5,7 +5,10 @@ import { inRange } from "lodash";
 
 export async function loadImages() {
   try {
-    const { status, data } = await axios.get(PICTURES_URL);
+    let url = PICTURES_URL;
+    if (typeof window === "undefined") url = `${process.env.SERVER_PATH}${url}`;
+
+    const { status, data } = await axios.get(url);
 
     if (!inRange(status, 200, 400)) return [];
 

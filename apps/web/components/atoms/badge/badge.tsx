@@ -9,7 +9,7 @@ type BadgeProps = DetailedHTMLProps<
 
 export default function Badge({ className, children, ...rest }: BadgeProps) {
   return (
-    <span className={clsx(s.badge, className)} {...rest}>
+    <span className={clsx(s.badge, "rounded", className)} {...rest}>
       {children}
     </span>
   );

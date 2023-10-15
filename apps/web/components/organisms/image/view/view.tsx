@@ -27,6 +27,7 @@ export default function View({ preview, picture: propsPicture }: ViewProps) {
         height={200}
         className={clsx(
           s.image,
+          "rounded",
           hovered && s.darkened,
           loading && s.opaque,
           preview && s.preview

@@ -1,3 +1,5 @@
+"use client";
+
 import DeleteBubble from "@web/components/molecules/delete-bubble/delete-bubble";
 import { useImageKeeperStore } from "@web/store";
 import s from "./delete-bubbles.module.css";

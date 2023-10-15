@@ -1,0 +1,31 @@
+.skeleton {
+  margin-top: 2rem;
+  width: 100%;
+  padding: 0;
+}
+
+.heading {
+  width: 20rem;
+  height: 2.5rem;
+  background-color: var(--gray);
+}
+
+.imageList {
+  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0;
+}
+
+.image {
+  width: 200px;
+  height: 150px;
+  background-color: var(--gray);
+}
+
+.imageList li:nth-child(even) .image {
+  width: 300px;
+}

@@ -1,3 +1,5 @@
+"use client";
+
 import { useImageKeeperStore } from "@web/store";
 import { nanoid } from "nanoid";
 import Notification from "@web/components/molecules/notification";

@@ -10,7 +10,7 @@ interface NotificationProps {
 
 export default function Notification({ notification }: NotificationProps) {
   return (
-    <div className={s.notification}>
+    <div className={clsx(s.notification, "rounded")}>
       <Heading className={clsx(s.heading, s[notification.status])}>
         {notification.heading}
       </Heading>

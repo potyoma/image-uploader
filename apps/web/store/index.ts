@@ -27,15 +27,20 @@ export const useImageKeeperStore = create(
     uploadImages: uploadImages(set),
     addNotification: (notification: Notification) =>
       set(addNotification(notification, set)),
-    getImages: () => sortPictures(get().pictures),
+    getImages: async () => {
+      let pictures = get().pictures;
+
+      if (pictures.length < 1) {
+        pictures = await loadImages();
+        set(state => {
+          state.pictures = pictures;
+        });
+      }
+
+      return sortPictures(pictures);
+    },
     getLoadQueueImage: (id: string) =>
       get().loadQueue?.find(lq => lq.id === id),
-    fetchPictures: async () => {
-      const pictures = await loadImages();
-      set(state => {
-        state.pictures = pictures;
-      });
-    },
     deletePicture: (id: string) => {
       set(deletePicture(id, set));
     },

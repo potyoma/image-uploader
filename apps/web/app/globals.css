@@ -51,3 +51,7 @@ body {
   padding-right: 15px;
   position: fixed;
 }
+
+.rounded {
+  border-radius: 0.625rem;
+}

@@ -1,7 +1,8 @@
 import Logo from "@web/components/atoms/logo/logo";
 import s from "./header-logo.module.css";
-import Counter from "@web/components/atoms/counter/counter";
+import Counter, { CounterSkeleton } from "@web/components/atoms/counter";
 import Link from "next/link";
+import { Suspense } from "react";
 
 export default function HeaderLogo() {
   return (
@@ -9,7 +10,9 @@ export default function HeaderLogo() {
       <Link href="/">
         <Logo />
       </Link>
-      <Counter />
+      <Suspense fallback={<CounterSkeleton />}>
+        <Counter />
+      </Suspense>
     </div>
   );
 }

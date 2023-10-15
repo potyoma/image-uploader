@@ -20,7 +20,6 @@
   -webkit-font-smoothing: inherit;
   -moz-osx-font-smoothing: inherit;
 
-  border-radius: 0.625rem;
   padding: var(--padding);
   display: flex;
   align-items: center;

@@ -12,9 +12,8 @@ export interface ImageKeeperState {
 export interface ImageKeeperActions {
   uploadImages: (images: Picture[]) => void;
   addNotification: (notification: Notification) => void;
-  getImages: () => Pictures;
+  getImages: () => Promise<Pictures>;
   getLoadQueueImage: (id: string) => Picture | undefined;
-  fetchPictures: () => Promise<void>;
   deletePicture: (id: string) => void;
   cancelDelete: () => void;
   editPicture: (picture: Picture) => void;

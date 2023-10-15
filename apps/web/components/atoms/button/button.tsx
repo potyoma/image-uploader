@@ -30,6 +30,7 @@ export default function Button({
     <Component
       className={clsx(
         s.button,
+        "rounded",
         transparent ? s.transparent : s.buttonBg,
         className
       )}

@@ -1,17 +1,14 @@
-"use client";
-import { useImageKeeperStore } from "@web/store";
 import Text from "../text";
 import s from "./counter.module.css";
 import { plural } from "@web/lib/utils";
+import { countPictures } from "@web/lib/service/count-pictures";
 
-export default function Counter() {
-  const { pictures } = useImageKeeperStore();
-
-  const countPictures = pictures.length;
+export default async function Counter() {
+  const count = await countPictures();
 
   return (
     <Text className={s.text}>
-      {countPictures} {plural("image", countPictures)} stored in keeper
+      {count} {plural("image", count)} stored in keeper
     </Text>
   );
 }
