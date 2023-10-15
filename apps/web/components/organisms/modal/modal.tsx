@@ -5,12 +5,14 @@ import s from "./modal.module.css";
 import Button from "@web/components/atoms/button";
 import Icon from "@web/components/atoms/icon";
 import { useScrollToggle } from "@web/hooks";
+import clsx from "clsx";
 
 interface ModalProps {
   open?: boolean;
   children: ReactNode;
-  onClose: () => void;
+  onClose?: () => void;
   cancelCaption?: string;
+  solid?: boolean;
 }
 
 export default function Modal({
@@ -18,16 +20,19 @@ export default function Modal({
   onClose,
   open,
   cancelCaption = "Close",
+  solid,
 }: ModalProps) {
   useScrollToggle(open ?? false);
 
   return open ? (
-    <div className={s.modal}>
+    <div className={clsx(s.modal, solid ? s.solid : s.transparent)}>
       <div className={s.controls}>
-        <Button onClick={onClose}>
-          <Icon color="black" icon="close" />
-          {cancelCaption}
-        </Button>
+        {onClose && (
+          <Button onClick={onClose}>
+            <Icon color="black" icon="close" />
+            {cancelCaption}
+          </Button>
+        )}
       </div>
       <div className={s.content}>{children}</div>
     </div>

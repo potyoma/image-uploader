@@ -34,7 +34,7 @@ function ImageBlocksInt() {
 export default function ImageBlocks() {
   return (
     <Suspense fallback={<ImageBlocksSkeleton />}>
-      <ImageBlocksInt />;
+      <ImageBlocksInt />
     </Suspense>
   );
 }

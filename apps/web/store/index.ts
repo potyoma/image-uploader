@@ -45,6 +45,7 @@ export const useImageKeeperStore = create(
       const picturesNumber = await countPictures();
       set(state => {
         state.count = picturesNumber;
+        state.noImages = picturesNumber === 0;
       });
     },
     getLoadQueueImage: (id: string) =>

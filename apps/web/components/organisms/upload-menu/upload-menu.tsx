@@ -6,11 +6,12 @@ import s from "./upload-menu.module.css";
 import Heading from "@web/components/atoms/heading";
 import Text from "@web/components/atoms/text";
 import Input from "@web/components/atoms/input";
-import { useCallback } from "react";
+import { ReactNode, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { useImageKeeperStore } from "@web/store";
 import { Picture } from "@web/store/models/picture";
 import moment from "moment";
+import type { HeadingLevel } from "@web/components/atoms/heading/heading";
 
 function fileToPicture(file: File): Picture {
   return {
@@ -23,9 +24,24 @@ function fileToPicture(file: File): Picture {
 
 interface UploadMenuProps {
   onStartLoad?: () => void;
+  heading?: string;
+  headingLevel?: HeadingLevel;
+  message?: string;
+  icon?: ReactNode;
+  renderButton?: (onClick: () => void) => ReactNode;
 }
 
-export default function UploadMenu({ onStartLoad }: UploadMenuProps) {
+const DEFAULT_HEADING = "Upload file";
+const DEFAULT_MESSAGE = "Drop your file(s) here or click to start uploading";
+
+export default function UploadMenu({
+  onStartLoad,
+  heading = DEFAULT_HEADING,
+  message = DEFAULT_MESSAGE,
+  headingLevel = "h2",
+  icon,
+  renderButton,
+}: UploadMenuProps) {
   const { uploadImages } = useImageKeeperStore();
 
   const handleDrop = useCallback(
@@ -49,16 +65,18 @@ export default function UploadMenu({ onStartLoad }: UploadMenuProps) {
     noKeyboard: true,
   });
 
+  const Wrapper = renderButton ? "div" : Button;
+  const WrapperProps = renderButton ? {} : { transparent: true, onClick: open };
+
   return (
     <div {...getRootProps()}>
       <Input {...getInputProps()} />
-      <Button transparent className={s.button} onClick={open}>
-        <Icon color="green" icon="cloud" className={s.icon} />
-        <Heading level="h2">Upload file</Heading>
-        <Text className={s.text}>
-          Drop your file(s) here or click to start uploading
-        </Text>
-      </Button>
+      <Wrapper className={s.button} {...WrapperProps}>
+        {icon || <Icon color="green" icon="cloud" className={s.icon} />}
+        <Heading level={headingLevel}>{heading}</Heading>
+        <Text className={s.text}>{message}</Text>
+        {renderButton?.(open)}
+      </Wrapper>
     </div>
   );
 }

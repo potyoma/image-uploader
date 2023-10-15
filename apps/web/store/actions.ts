@@ -83,6 +83,7 @@ function finishLoadingImage(
     pic.loading = false;
     pic.id = result!.id ?? pic.id;
     pic.src = result!.src;
+    state.countPictures();
   };
 }
 

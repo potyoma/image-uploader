@@ -1,4 +1,4 @@
-import type { Picture, Pictures } from "./models/picture";
+import type { Picture } from "./models/picture";
 import type { Notification } from "./models/notification";
 
 export interface ImageKeeperState {
@@ -8,6 +8,7 @@ export interface ImageKeeperState {
   loadQueue: Picture[];
   deleteQueue: Picture[];
   editingPicture?: Picture;
+  noImages?: boolean;
 }
 
 export interface ImageKeeperActions {
@@ -20,6 +21,7 @@ export interface ImageKeeperActions {
   editPicture: (picture: Picture) => void;
   cancelEdit: () => void;
   saveEdited: (comment?: string) => void;
+  countPictures: () => Promise<void>;
 }
 
 export type ImageKeeperStore = ImageKeeperState & ImageKeeperActions;
