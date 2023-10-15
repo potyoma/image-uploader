@@ -8,10 +8,6 @@ import { ImageBlocksSkeleton } from ".";
 import { useShallow } from "zustand/react/shallow";
 
 function ImageBlocksInt() {
-  if (typeof window === "undefined") {
-    throw Error("Image blocks should only render on the client.");
-  }
-
   const pictures = useImageKeeperStore(useShallow(state => state.pictures));
 
   const { getImages } = useImageKeeperStore();

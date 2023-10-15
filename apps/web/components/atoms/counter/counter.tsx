@@ -7,10 +7,6 @@ import { useEffect } from "react";
 import { useImageKeeperStore } from "@web/store";
 
 export default function Counter() {
-  if (typeof window === "undefined") {
-    throw Error("Counter should only render on the client.");
-  }
-
   const { count, countPictures } = useImageKeeperStore();
 
   useEffect(() => {
