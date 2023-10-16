@@ -3,3 +3,37 @@
   bottom: 50px;
   right: 50px;
 }
+
+@media screen and (max-width: 600px) {
+  .notifications {
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 20rem;
+    margin: 0 auto;
+  }
+
+  .notifications div:not(:only-child) {
+    position: absolute;
+    width: 100%;
+    visibility: hidden;
+  }
+
+  .notifications div:not(:only-child):nth-last-child(3) {
+    visibility: visible;
+    transform: scaleX(0.8);
+  }
+
+  .notifications div:not(:only-child):nth-last-child(2) {
+    visibility: visible;
+    top: 5px;
+    transform: scaleX(0.9);
+  }
+
+  .notifications div:not(:only-child):last-child {
+    visibility: visible;
+    top: 10px;
+    width: 100%;
+    z-index: 10;
+  }
+}
