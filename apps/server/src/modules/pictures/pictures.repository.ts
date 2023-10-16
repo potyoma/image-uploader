@@ -19,8 +19,13 @@ export class PicturesRepository {
     return await Promise.all(createPromises);
   }
 
-  async getPictures() {
-    return this.prisma.picture.findMany({ orderBy: { date: 'desc' } });
+  async getPictures(params: { skip?: number; take: number }) {
+    const { take, skip } = params;
+    return this.prisma.picture.findMany({
+      orderBy: { date: 'desc' },
+      skip,
+      take,
+    });
   }
 
   async updatePicture(params: {

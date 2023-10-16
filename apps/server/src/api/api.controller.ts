@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Res,
   StreamableFile,
   UploadedFile,
@@ -29,9 +30,11 @@ export class ApiController {
   }
 
   @Get('pictures')
-  async getPictures() {
+  async getPictures(@Query('take') take: number, @Query('skip') skip?: number) {
     const pictures = await this.picturesService.getPictures({
       url: this.PICTURE_URL_BASE,
+      take,
+      skip,
     });
     return pictures;
   }

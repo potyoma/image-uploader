@@ -71,9 +71,9 @@ export class PicturesService {
     return pictures.map((p) => this.toModel(p, url));
   }
 
-  async getPictures(params: { url: string }) {
-    const { url } = params;
-    const pictures = await this.repository.getPictures();
+  async getPictures(params: { url: string; take: number; skip?: number }) {
+    const { url, take, skip } = params;
+    const pictures = await this.repository.getPictures({ take, skip });
     return pictures.map((p) => this.toModel(p, url));
   }
 
