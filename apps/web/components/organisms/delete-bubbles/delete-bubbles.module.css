@@ -15,25 +15,25 @@
     margin: 0 auto;
   }
 
-  .bubbles div:not(:only-child) {
+  .bubbles > div:not(:only-child) {
     position: absolute;
     width: 100%;
     visibility: hidden;
   }
 
-  .bubbles div:not(:only-child):nth-last-child(3) {
+  .bubbles > div:not(:only-child):nth-last-child(3) {
     visibility: visible;
     transform: scaleX(0.8);
     bottom: -5px;
   }
 
-  .bubbles div:not(:only-child):nth-last-child(2) {
+  .bubbles > div:not(:only-child):nth-last-child(2) {
     visibility: visible;
     bottom: 0;
     transform: scaleX(0.9);
   }
 
-  .bubbles div:not(:only-child):last-child {
+  .bubbles > div:not(:only-child):last-child {
     bottom: 5px;
     visibility: visible;
     width: 100%;

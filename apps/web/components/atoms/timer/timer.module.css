@@ -36,4 +36,5 @@
 
 .timerSvg {
   transform: scaleX(-1);
+  width: 100%;
 }
