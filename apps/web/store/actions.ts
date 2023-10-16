@@ -51,7 +51,7 @@ export function addNotification(notification: Notification, set: SetFunction) {
         set(state => {
           state.notifications?.shift();
         }),
-      3000
+      4000
     );
   };
 }
