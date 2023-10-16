@@ -20,7 +20,7 @@ export class PicturesRepository {
   }
 
   async getPictures() {
-    return this.prisma.picture.findMany();
+    return this.prisma.picture.findMany({ orderBy: { date: 'desc' } });
   }
 
   async updatePicture(params: {
