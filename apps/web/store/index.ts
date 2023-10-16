@@ -24,16 +24,19 @@ export const useImageKeeperStore = create(
     loadQueue: [],
     deleteQueue: [],
     notifications: [],
+    hasMoreImages: false,
+    limitImages: 50,
+    shownImages: 0,
     uploadImages: uploadImages(set),
     getImages: async () => {
-      let pictures = get().pictures;
+      const { limitImages, shownImages } = get();
+      const pictures = await loadImages(limitImages, shownImages);
 
-      if (pictures.length < 1) {
-        pictures = await loadImages();
-        set(state => {
-          state.pictures = pictures;
-        });
-      }
+      set(state => {
+        state.shownImages += pictures.length;
+        state.pictures = pictures;
+        state.hasMoreImages = state.count - state.shownImages > 0;
+      });
 
       return chunkPictures(pictures);
     },

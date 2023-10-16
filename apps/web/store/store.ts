@@ -9,6 +9,9 @@ export interface ImageKeeperState {
   deleteQueue: Picture[];
   editingPicture?: Picture;
   noImages?: boolean;
+  hasMoreImages: boolean;
+  limitImages: number;
+  shownImages: number;
 }
 
 export interface ImageKeeperActions {
