@@ -45,11 +45,12 @@ export function deletePermanently(id: string, set: SetFunction) {
 
 export function addNotification(notification: Notification, set: SetFunction) {
   return function (state: ImageKeeperStore) {
+    console.log(notification);
     state.notifications.push(notification);
     setTimeout(
       () =>
         set(state => {
-          state.notifications?.shift();
+          state.notifications.shift();
         }),
       4000
     );
@@ -84,7 +85,10 @@ function finishLoadingImage(
 
     const pictureIndex = findIndexById(state.pictures, id);
 
-    if (!result) state.pictures.splice(pictureIndex, 1);
+    if (!result) {
+      state.pictures.splice(pictureIndex, 1);
+      return;
+    }
 
     const pic = state.pictures[pictureIndex];
     pic.loading = false;

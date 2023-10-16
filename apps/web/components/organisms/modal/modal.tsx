@@ -6,6 +6,7 @@ import Button from "@web/components/atoms/button";
 import Icon from "@web/components/atoms/icon";
 import { useScrollToggle } from "@web/hooks";
 import clsx from "clsx";
+import { useKey } from "@web/hooks/use-key";
 
 interface ModalProps {
   open?: boolean;
@@ -23,6 +24,8 @@ export default function Modal({
   solid,
 }: ModalProps) {
   useScrollToggle(open ?? false);
+
+  useKey("Escape", onClose);
 
   return open ? (
     <div className={clsx(s.modal, solid ? s.solid : s.transparent)}>

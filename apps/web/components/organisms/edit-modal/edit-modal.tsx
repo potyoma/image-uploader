@@ -11,6 +11,7 @@ import Input from "@web/components/atoms/input";
 import s from "./edit-modal.module.css";
 import Heading from "@web/components/atoms/heading";
 import { ChangeEvent, useState } from "react";
+import { useFocus } from "@web/hooks";
 
 interface EditModalProps {
   picture: Picture;
@@ -20,6 +21,8 @@ interface EditModalProps {
 
 function EditModalComponent({ picture, onSave, onClose }: EditModalProps) {
   const [comment, setComment] = useState(picture!.comment ?? "");
+
+  const focusRef = useFocus<HTMLInputElement>();
 
   const picturePreview = {
     src: picture.src,
@@ -47,6 +50,7 @@ function EditModalComponent({ picture, onSave, onClose }: EditModalProps) {
           onChange={handleChange}
           placeholder="Enter custom label"
           label={"100 chars max"}
+          ref={focusRef}
         />
         <Button type="submit">
           <Icon icon="check" />

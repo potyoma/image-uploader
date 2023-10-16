@@ -3,6 +3,7 @@ import axios, { AxiosProgressEvent, AxiosRequestConfig } from "axios";
 import { PICTURE_URL } from "./consts";
 import { inRange } from "lodash";
 import { Notification } from "@web/store/models/notification";
+import { failed, success } from "../utils";
 
 export async function uploadImage(
   image: Picture,
@@ -25,20 +26,12 @@ export async function uploadImage(
 
     if (!inRange(status, 200, 300)) throw "Load Error";
 
-    onFinish?.(
-      {
-        status: "success",
-        heading: "Cool",
-        message: "Uploaded successfully",
-      },
-      data as Picture
-    );
+    onFinish?.(success("Uploaded successfully"), data as Picture);
   } catch {
-    onFinish?.({
-      status: "error",
-      heading: "Sorry, but",
-      message:
-        "Something really bad happened while uploading your image, please try again ",
-    });
+    onFinish?.(
+      failed(
+        "Something really bad happened while uploading your image, please try again "
+      )
+    );
   }
 }

@@ -3,6 +3,7 @@ import type { Notification } from "@web/store/models/notification";
 import axios from "axios";
 import { PICTURE_URL } from "./consts";
 import { inRange } from "lodash";
+import { failed, success } from "../utils";
 
 export async function updateComment(
   picture: Picture,
@@ -16,19 +17,8 @@ export async function updateComment(
 
     if (!inRange(status, 200, 300)) throw "Update error";
 
-    onFinish(
-      {
-        status: "success",
-        heading: "Cool",
-        message: `Updated the comment for ${name}`,
-      },
-      data
-    );
+    onFinish(success(`Updated the comment for ${name}`), data);
   } catch {
-    onFinish({
-      status: "error",
-      heading: "Sorry, but",
-      message: `Could not update the comment for ${name}`,
-    });
+    onFinish(failed(`Could not update the comment for ${name}`));
   }
 }

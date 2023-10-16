@@ -13,13 +13,11 @@ import {
   uploadImages,
 } from "./actions";
 import { sortPictures } from "./store.utils";
-import { persist } from "zustand/middleware";
 import { countPictures } from "@web/lib/service/count-pictures";
 
 const middlewares = (
   initializer: StateCreator<ImageKeeperStore, [["zustand/immer", never]], []>
-) =>
-  persist(immer<ImageKeeperStore>(initializer), { name: "image-keeper-store" });
+) => immer<ImageKeeperStore>(initializer);
 
 export const useImageKeeperStore = create(
   middlewares((set, get) => ({

@@ -3,6 +3,7 @@ import axios from "axios";
 import { PICTURE_URL } from "./consts";
 import { inRange } from "lodash";
 import { Notification } from "@web/store/models/notification";
+import { failed, success } from "../utils";
 
 export async function deleteImage(
   picture: Picture,
@@ -13,16 +14,8 @@ export async function deleteImage(
 
     if (!inRange(status, 200, 300)) throw "Delete error";
 
-    onFinish({
-      status: "success",
-      heading: "Cool",
-      message: `Successfully deleted image ${picture.name}`,
-    });
+    onFinish(success(`Successfully deleted image ${picture.name}`));
   } catch {
-    onFinish({
-      status: "error",
-      heading: "Sorry, but",
-      message: `Could not delete image ${picture.name}`,
-    });
+    onFinish(failed(`Could not delete image ${picture.name}`));
   }
 }

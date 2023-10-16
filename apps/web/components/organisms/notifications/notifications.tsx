@@ -8,11 +8,11 @@ import s from "./notifications.module.css";
 export default function Notifications() {
   const { notifications } = useImageKeeperStore();
 
-  if ((notifications?.length ?? 0) < 1) return null;
+  if (notifications.length < 1) return null;
 
   return (
     <div className={s.notifications}>
-      {[...notifications!].reverse().map(n => (
+      {[...notifications].reverse().map(n => (
         <Notification key={nanoid()} notification={n} />
       ))}
     </div>
