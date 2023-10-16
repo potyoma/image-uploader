@@ -2,10 +2,8 @@ import { StateCreator, create } from "zustand";
 import type { Picture } from "./models/picture";
 import { loadImages } from "@web/lib/service";
 import { immer } from "zustand/middleware/immer";
-import type { Notification } from "./models/notification";
 import { ImageKeeperStore } from "./store";
 import {
-  addNotification,
   cancelDelete,
   deletePermanently,
   deletePicture,
@@ -27,8 +25,6 @@ export const useImageKeeperStore = create(
     deleteQueue: [],
     notifications: [],
     uploadImages: uploadImages(set),
-    addNotification: (notification: Notification) =>
-      set(addNotification(notification, set)),
     getImages: async () => {
       let pictures = get().pictures;
 
@@ -72,5 +68,9 @@ export const useImageKeeperStore = create(
     deletePermanently: (id: string) => {
       set(deletePermanently(id, set));
     },
+    removeNotification: () =>
+      set(state => {
+        state.notifications.shift();
+      }),
   }))
 );

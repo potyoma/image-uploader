@@ -5,19 +5,17 @@ import Icon from "@web/components/atoms/icon/icon";
 import { useCallback, useState } from "react";
 import Modal from "../modal/modal";
 import UploadMenu from "../upload-menu";
+import { useImageKeeperStore } from "@web/store";
 
-interface UploadButtonProps {
-  disabled?: boolean;
-}
-
-export default function UploadButton({ disabled }: UploadButtonProps) {
+export default function UploadButton() {
+  const { count } = useImageKeeperStore();
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = useCallback(() => setIsOpen(curr => !curr), []);
 
   return (
     <>
-      <Button disabled={disabled} onClick={toggle}>
+      <Button disabled={count < 1} onClick={toggle}>
         <Icon icon="cloud" color="black" />
         Upload Image
       </Button>

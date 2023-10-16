@@ -9,7 +9,6 @@ export interface Picture {
   loadProgress?: number;
   size?: number;
   blob?: Blob;
-  deleteTimeout?: NodeJS.Timeout;
   markDelete?: boolean;
 }
 

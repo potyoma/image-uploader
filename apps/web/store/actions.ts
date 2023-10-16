@@ -30,7 +30,7 @@ export function deletePermanently(id: string, set: SetFunction) {
     const picture = state.pictures[picIndex];
     deleteImage({ ...picture }, notification =>
       set(state => {
-        state.addNotification(notification);
+        state.notifications.push(notification);
         removeFromArrayById(state.deleteQueue, id);
 
         if (notification.status === "success")
@@ -43,26 +43,12 @@ export function deletePermanently(id: string, set: SetFunction) {
   };
 }
 
-export function addNotification(notification: Notification, set: SetFunction) {
-  return function (state: ImageKeeperStore) {
-    console.log(notification);
-    state.notifications.push(notification);
-    setTimeout(
-      () =>
-        set(state => {
-          state.notifications.shift();
-        }),
-      4000
-    );
-  };
-}
-
 export function saveEdited(comment: string | undefined, set: SetFunction) {
   return function (state: ImageKeeperStore) {
     state.editingPicture!.comment = comment;
     updateComment(state.editingPicture!, (notification, picture) => {
       set(state => {
-        state.addNotification(notification);
+        state.notifications.push(notification);
 
         if (picture) {
           const picIndex = findIndexById(state.pictures, picture.id!);
@@ -80,7 +66,7 @@ function finishLoadingImage(
   result?: Picture
 ) {
   return function (state: ImageKeeperStore) {
-    state.addNotification(notification);
+    state.notifications.push(notification);
     removeFromArrayById(state.loadQueue, id);
 
     const pictureIndex = findIndexById(state.pictures, id);
@@ -108,7 +94,7 @@ export function uploadImages(set: SetFunction) {
       im.loading = true;
 
       set(state => {
-        state.pictures.push(im);
+        state.pictures.unshift(im);
         state.noImages = false;
         state.loadQueue.push(im);
 

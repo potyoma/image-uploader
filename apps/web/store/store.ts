@@ -13,7 +13,6 @@ export interface ImageKeeperState {
 
 export interface ImageKeeperActions {
   uploadImages: (images: Picture[]) => void;
-  addNotification: (notification: Notification) => void;
   getImages: () => Promise<Record<string, Picture[]>>;
   getLoadQueueImage: (id: string) => Picture | undefined;
   deletePicture: (id: string) => void;
@@ -22,7 +21,8 @@ export interface ImageKeeperActions {
   cancelEdit: () => void;
   saveEdited: (comment?: string) => void;
   countPictures: () => Promise<void>;
-  deletePermanently: (id: string) => void
+  deletePermanently: (id: string) => void;
+  removeNotification: () => void;
 }
 
 export type ImageKeeperStore = ImageKeeperState & ImageKeeperActions;
