@@ -102,17 +102,17 @@ export function uploadImages(set: SetFunction) {
     images.forEach(im => {
       im.id = nanoid();
       im.loading = true;
-      let index: number;
 
       set(state => {
         state.pictures.push(im);
         state.noImages = false;
-        index = state.loadQueue.push(im) - 1;
+        state.loadQueue.push(im);
 
         uploadImage(
           im,
           kb =>
             set(state => {
+              const index = findIndexById(state.loadQueue, im.id!);
               state.loadQueue[index].loadProgress = kb;
             }),
           (notification, result) =>
