@@ -30,12 +30,18 @@ export class ApiController {
   }
 
   @Get('pictures')
-  async getPictures(@Query('take') take: number, @Query('skip') skip?: number) {
+  async getPictures(@Query('take') take: string, @Query('skip') skip?: string) {
+    const [takeParsed, skipParsed] = [take, skip].map((par) => {
+      const value = par ? parseInt(par) : 0;
+      return isNaN(value) ? 0 : value;
+    });
+
     const pictures = await this.picturesService.getPictures({
       url: this.PICTURE_URL_BASE,
-      take,
-      skip,
+      take: takeParsed,
+      skip: skipParsed,
     });
+
     return pictures;
   }
 
