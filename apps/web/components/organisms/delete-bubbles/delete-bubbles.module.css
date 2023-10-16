@@ -4,3 +4,39 @@
   left: 50px;
   z-index: 3;
 }
+
+@media screen and (max-width: 600px) {
+  .bubbles {
+    bottom: 30px;
+    left: 0;
+    right: 0;
+    width: 20rem;
+    max-height: 10rem;
+    margin: 0 auto;
+  }
+
+  .bubbles div:not(:only-child) {
+    position: absolute;
+    width: 100%;
+    visibility: hidden;
+  }
+
+  .bubbles div:not(:only-child):nth-last-child(3) {
+    visibility: visible;
+    transform: scaleX(0.8);
+    bottom: -5px;
+  }
+
+  .bubbles div:not(:only-child):nth-last-child(2) {
+    visibility: visible;
+    bottom: 0;
+    transform: scaleX(0.9);
+  }
+
+  .bubbles div:not(:only-child):last-child {
+    bottom: 5px;
+    visibility: visible;
+    width: 100%;
+    z-index: 20;
+  }
+}
