@@ -12,7 +12,7 @@ import {
   saveEdited,
   uploadImages,
 } from "./actions";
-import { sortPictures } from "./store.utils";
+import { chunkPictures } from "./store.utils";
 import { countPictures } from "@web/lib/service/count-pictures";
 
 const middlewares = (
@@ -39,7 +39,7 @@ export const useImageKeeperStore = create(
         });
       }
 
-      return sortPictures(pictures);
+      return chunkPictures(pictures);
     },
     countPictures: async () => {
       const picturesNumber = await countPictures();

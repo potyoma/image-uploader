@@ -10,9 +10,7 @@ export default function HeaderLogo() {
       <Link href="/">
         <Logo />
       </Link>
-      <Suspense fallback={<CounterSkeleton />}>
-        <Counter />
-      </Suspense>
+      <Counter />
     </div>
   );
 }
