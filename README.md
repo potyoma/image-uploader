@@ -37,6 +37,9 @@ Nest step is to apply migrations:
 pnpm run migrate
 ```
 
+## Known issues
+In production image might not be saved sometimes. The problem is with mounted disk which is managed by cloud provider. 
+
 And finally run both backend and frontend with:
 ```bash
 pnpm run dev
