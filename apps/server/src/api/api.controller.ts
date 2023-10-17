@@ -61,7 +61,6 @@ export class ApiController {
       mimeType: file.mimetype,
       url: this.PICTURE_URL_BASE,
     });
-    console.log(file.path);
     return resp;
   }
 
@@ -70,10 +69,7 @@ export class ApiController {
     @Param('id') id: string,
     @Res({ passthrough: true }) res: Response,
   ) {
-    console.log(id);
     const { picture, file } = await this.picturesService.getPicture({ id });
-
-    console.log(picture);
 
     if (!picture) {
       res.status(404).send();
